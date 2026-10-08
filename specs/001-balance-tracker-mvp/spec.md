@@ -1,6 +1,6 @@
 # Feature Specification: Balance Tracker (Registro de Balance Trabajo/Aprendizaje)
 
-**Feature Branch**: `docs/spec`
+**Feature Branch**: `specs/001-balance-tracker-mvp`
 
 **Created**: 2026-10-08
 
