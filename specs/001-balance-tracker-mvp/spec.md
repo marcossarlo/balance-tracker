@@ -38,7 +38,9 @@ sin conexión.
    silencio, sin requerir acción adicional de mi parte.
 4. **Given** guardo una entrada, **When** ocurre un error de almacenamiento
    (por ejemplo, espacio agotado), **Then** veo una notificación discreta y
-   amigable, nunca un mensaje técnico ni un desbordamiento de errores.
+   amigable (toast `role="status"` no bloqueante en español, ~5 s, sin
+   acción requerida), nunca un mensaje técnico ni un desbordamiento de
+   errores.
 
 ---
 
@@ -167,8 +169,9 @@ tendencias y eliminar siguen operativos.
 ### Functional Requirements
 
 - **FR-001**: El sistema MUST permitir registrar una entrada con categoría
-  (Trabajo o Aprendizaje), descripción de texto libre y duración exacta de
-  15, 30, 60, 120, 180 o 240 minutos.
+  (Trabajo o Aprendizaje), descripción de texto libre —recortada
+  (trimmed), de 1 a 200 caracteres— y duración exacta de 15, 30, 60, 120,
+  180 o 240 minutos.
 - **FR-002**: El sistema MUST asignar a cada entrada la fecha del día
   calendario en que se creó y un sello de creación.
 - **FR-003**: Cada entrada MUST tener un identificador único e inmutable.
@@ -176,7 +179,9 @@ tendencias y eliminar siguen operativos.
   de Trabajo y el total de Aprendizaje por separado.
 - **FR-005**: El sistema MUST mostrar una tendencia de los últimos 7 días
   con una serie por categoría, en orden cronológico, incluyendo días sin
-  registros como cero.
+  registros como cero. La ventana de 7 días termina en el día calendario
+  actual; NO sigue la selección del DayPicker (que solo afecta al balance
+  diario).
 - **FR-006**: El sistema MUST permitir eliminar entradas existentes,
   recalculando de inmediato balance y tendencia.
 - **FR-007**: El sistema NO MUST ofrecer edición de entradas existentes; la
@@ -184,7 +189,9 @@ tendencias y eliminar siguen operativos.
 - **FR-008**: Tras un guardado exitoso, la barra de entrada MUST
   reiniciarse automáticamente y de forma silenciosa.
 - **FR-009**: Ante cualquier error de almacenamiento, el sistema MUST
-  mostrar una notificación discreta y amigable; los detalles técnicos MUST
+  mostrar una notificación discreta y amigable —aviso (toast) no bloqueante
+  en español, accesible con `role="status"`, visible alrededor de 5
+  segundos y sin acción requerida del usuario—; los detalles técnicos MUST
   permanecer ocultos para el usuario.
 - **FR-010**: El sistema MUST operar de forma completa sin conexión a
   internet una vez cargado, persistiendo los datos en el dispositivo y
@@ -211,8 +218,9 @@ tendencias y eliminar siguen operativos.
 
 - **SC-001**: Un usuario puede registrar una entrada completa en menos de
   10 segundos desde la pantalla principal.
-- **SC-002**: Tras guardar, el balance del día refleja la nueva entrada en
-  menos de 1 segundo percibido por el usuario.
+- **SC-002**: Tras guardar, el balance del día muestra la nueva entrada
+  automáticamente —sin recargar la aplicación ni requerir acción adicional
+  del usuario— en menos de 1 segundo percibido.
 - **SC-003**: 100% de los errores de almacenamiento se presentan como
   mensajes amigables; ningún usuario ve un mensaje técnico o de programador.
 - **SC-004**: Con la red desconectada, el 100% de las funciones

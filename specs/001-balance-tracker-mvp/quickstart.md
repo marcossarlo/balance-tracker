@@ -84,8 +84,8 @@ Orden TDD exigido (Artículo III): ver **Secuencia de validación** abajo.
 
 1. Forzar fallo de cuota (o simular `QuotaExceededError` en el hook de
    pruebas) y guardar.
-2. Esperado: toast/notificación discreta en español; nunca un stack trace
-   ni mensaje crudo del navegador en pantalla.
+2. Esperado: toast no bloqueante en español con `role="status"` (~5 s,
+   FR-009); nunca un stack trace ni mensaje crudo del navegador en pantalla.
 
 ## Criterios de aceptación del MVP
 

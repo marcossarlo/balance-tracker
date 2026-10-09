@@ -76,7 +76,7 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 - [ ] T015 [P] [US1] Create QuickEntryBar component in src/components/QuickEntryBar.tsx: selector Trabajo/Aprendizaje (colores opuestos), input descripción, botones de duración 15/30/60/120/180/240 min, labels en español, reset automático y silencioso tras guardar con éxito (FR-008), avisos amigables sin stack traces (FR-009)
 - [ ] T016 [P] [US1] Create EntryList component in src/components/EntryList.tsx: lista de entradas del día con etiquetas en español (Trabajo/Aprendizaje, duración, descripción)
 - [ ] T017 [US1] Wire US1 in src/App.tsx: QuickEntryBar + EntryList + useTimeEntries para el día de hoy
-- [ ] T018 [US1] Component test in tests/component/QuickEntryBar.test.tsx: on save success form resets silently; on `{ ok: false }` shows friendly Spanish notification and form state preserved
+- [ ] T018 [US1] Component test in tests/component/QuickEntryBar.test.tsx: on save success form resets silently; on `{ ok: false }` shows non-blocking Spanish toast with `role="status"` (~5s, per FR-009) and form state preserved
 
 **Checkpoint**: US1 fully functional and testable independently (MVP).
 
@@ -125,7 +125,7 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 - [ ] T032 [US3] Implement `listEntriesByRange(startDate, endDate)` and `getWeeklyTrends(endDate)` in src/core/time-entry.repo.ts (default endDate = local today) — turns T029 GREEN
 - [ ] T033 [US3] Implement `useWeeklyTrends(endDate?)` hook in src/hooks/useWeeklyTrends.ts: `{ points, loading, error, refresh }`, exactly 7 points, per contracts/hooks.md
 - [ ] T034 [US3] Create WeeklyTrends component in src/components/WeeklyTrends.tsx: Recharts consumed directly with `dataKey="work"` / `dataKey="learning"` (Artículo VIII: sin wrappers), Spanish legend/axis labels, 7 days always visible
-- [ ] T035 [US3] Wire US3 in src/App.tsx: WeeklyTrends consuming `useWeeklyTrends`
+- [ ] T035 [US3] Wire US3 in src/App.tsx: WeeklyTrends consuming `useWeeklyTrends` with window anchored to local today, independent of DayPicker per FR-005
 
 **Checkpoint**: All read-side stories (US1–US3) independently functional.
 
@@ -147,7 +147,7 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 - [ ] T038 [US4] Implement `deleteTimeEntry(id)` in src/core/time-entry.repo.ts — turns T036 GREEN; NO `update`/`put` functions exist anywhere in src/core (Artículo IV)
 - [ ] T039 [US4] Add `remove(id)` to src/hooks/useTimeEntries.ts: resolves `{ ok } | { ok: false, code }`, triggers `refresh` of balance/trends hooks on success
 - [ ] T040 [US4] Add delete affordance to src/components/EntryList.tsx: "Eliminar" button with native `confirm()` in Spanish before calling `remove` (research.md R-09); friendly Spanish notification on `{ ok: false }` and entry remains visible (FR-009, edge case)
-- [ ] T041 [US4] Component test in tests/component/EntryList.test.tsx: cancel confirm keeps entry; confirm removes it from DOM; failed remove shows friendly notification and keeps entry rendered
+- [ ] T041 [US4] Component test in tests/component/EntryList.test.tsx: cancel confirm keeps entry; confirm removes it from DOM; failed remove shows non-blocking Spanish toast `role="status"` (FR-009) and keeps entry rendered
 
 **Checkpoint**: Correction loop complete; all 4 core stories work independently.
 
@@ -159,7 +159,7 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 **Independent Test**: Cargar app, desconectar red, registrar/balance/tendencia/eliminar operativos y datos sobreviven a recarga (quickstart V7).
 
-### Tests for User Story 5
+### Configuration & Tests for User Story 5
 
 - [ ] T042 [P] [US5] Configure `vite-plugin-pwa` in vite.config.ts per research.md R-05: `registerType: 'autoUpdate'`, Workbox `globPatterns` precaching shell (HTML/CSS/JS/manifest); generate manifest with Spanish app name
 - [ ] T043 [P] [US5] Add PWA icons and manifest assets under public/
@@ -178,10 +178,11 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 **Purpose**: Improvements that affect multiple user stories
 
 - [ ] T046 [P] Run full test suite `npm test` — all GREEN in tests/, no skipped tests
-- [ ] T047 [P] Grep audit: no `update(`/`put(` in src/core (Artículo IV), no global store imports (Redux/Zustand — Artículo VII), no wrappers over Dexie/Recharts (Artículo VIII)
+- [ ] T047 [P] Grep audit: no `update(`/`put(` in src/core (Artículo IV), no global store imports (Redux/Zustand — Artículo VII), no wrappers over Dexie/Recharts (Artículo VIII), no `fetch`/network calls/endpoints/auth anywhere in src/ (FR-012)
 - [ ] T048 [P] UI language audit: all visible strings in Spanish, Trabajo/Aprendizaje contrast colors (Artículo VI) in src/components/
 - [ ] T049 Execute scenarios V1–V8 in specs/001-balance-tracker-mvp/quickstart.md end-to-end and record results
 - [ ] T050 Red-Green-Refactor final pass: refactor duplicated code in src/core and src/hooks keeping all tests green (Artículo III)
+- [ ] T051 [P] Regression test for date-change re-query: `useDailyBalance` recalcula balance al cambiar su prop `date` y `useWeeklyTrends` NO sigue al DayPicker (ventana anclada a hoy, FR-005) en tests/component/hooks-date-change.test.ts (Edge Case 6 del spec)
 
 ---
 
