@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { RepositoryError, type RepositoryErrorCode } from '../core/errors';
+import { toRepositoryErrorCode as toCode, type RepositoryErrorCode } from '../core/errors';
 import {
   createTimeEntry,
   deleteTimeEntry,
@@ -23,9 +23,6 @@ export interface UseTimeEntries {
   remove: (id: string) => Promise<RemoveResult>;
 }
 
-function toCode(error: unknown): RepositoryErrorCode {
-  return error instanceof RepositoryError ? error.code : 'UNKNOWN';
-}
 
 export function useTimeEntries(date: string): UseTimeEntries {
   const [entries, setEntries] = useState<TimeEntry[]>([]);

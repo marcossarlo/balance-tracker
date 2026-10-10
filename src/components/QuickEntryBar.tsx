@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { DURATION_VALUES, type Category, type DurationValue } from '../core/types';
 import type { RepositoryErrorCode } from '../core/errors';
 import type { CreateTimeEntryInput } from '../core/time-entry.repo';
+import { CATEGORY_LABELS } from './categoryLabels';
 
 export interface QuickEntryBarProps {
   onSave: (input: CreateTimeEntryInput) => Promise<
@@ -14,11 +15,6 @@ const ERROR_MESSAGES: Record<RepositoryErrorCode, string> = {
   DB_UNAVAILABLE: 'No se puede acceder al almacenamiento. Inténtalo de nuevo.',
   VALIDATION: 'Revisa los datos: la descripción debe tener entre 1 y 200 caracteres.',
   UNKNOWN: 'No se pudo guardar. Inténtalo de nuevo.',
-};
-
-const CATEGORY_LABELS: Record<Category, string> = {
-  WORK: 'Trabajo',
-  LEARNING: 'Aprendizaje',
 };
 
 export default function QuickEntryBar({ onSave }: QuickEntryBarProps) {

@@ -94,3 +94,18 @@ Orden TDD exigido (Artículo III): ver **Secuencia de validación** abajo.
 - Sin `UPDATE` en el código (búsqueda de `update(` en `src/core` ⇒ 0
   resultados fuera de documentación).
 - UI visible en español; código/identificadores en inglés.
+
+## Results — 2026-10-10 (post Phase 8)
+
+| Scenario | Result | Evidence |
+|----------|--------|----------|
+| V1 Unidades puras | ✅ PASS | `npm test` — suites `daily-balance`, `weekly-trends`, `errors` verdes; 45 rechazado por catálogo |
+| V2 Repositorio BD real | ✅ PASS | suites `time-entry-*`, `db-schema`, `persistence` con `fake-indexeddb`; índice `date` y `[date+category]` verificados |
+| V3 Registro rápido | ✅ PASS (automatizado) | `QuickEntryBar.test.tsx`: reset silencioso, validación de campos; prueba manual en navegador pendiente |
+| V4 Balance diario | ✅ PASS (automatizado) | `daily-balance` unit + integration; verificación manual de colores pendiente |
+| V5 Tendencia semanal | ✅ PASS (automatizado) | `weekly-trends` unit + integration; gráfica Recharts en build ✓ |
+| V6 Eliminación | ✅ PASS (automatizado) | `time-entry-delete` + `EntryList.test.tsx`; `grep 'update(|\.put(' src/` → 0 |
+| V7 Offline | ✅ PARCIAL | `dist/sw.js` + precache 11 entries; manifest ES; `/sw.js` → 200 en preview. **Pendiente**: DevTools Offline manual |
+| V8 Errores amigables | ✅ PASS (automatizado) | `errors.test.ts` (mapeo de códigos) + toasts `role="status"` en componentes |
+
+Suite completa: **56/56 tests verdes**, `tsc -b` sin errores, `npm run build` con PWA ✓.

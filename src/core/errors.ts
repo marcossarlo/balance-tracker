@@ -14,6 +14,10 @@ export class RepositoryError extends Error {
   }
 }
 
+export function toRepositoryErrorCode(error: unknown): RepositoryErrorCode {
+  return error instanceof RepositoryError ? error.code : 'UNKNOWN';
+}
+
 export function mapIndexedDbError(error: unknown): RepositoryError {
   if (error instanceof RepositoryError) {
     return error;

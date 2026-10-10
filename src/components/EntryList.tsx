@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { RepositoryErrorCode } from '../core/errors';
+import { CATEGORY_LABELS } from './categoryLabels';
 import type { TimeEntry } from '../core/types';
 
 export interface EntryListProps {
@@ -7,11 +8,6 @@ export interface EntryListProps {
   loading: boolean;
   onRemove?: (id: string) => Promise<{ ok: true } | { ok: false; code: RepositoryErrorCode }>;
 }
-
-const CATEGORY_LABELS: Record<TimeEntry['category'], string> = {
-  WORK: 'Trabajo',
-  LEARNING: 'Aprendizaje',
-};
 
 const ERROR_MESSAGES: Record<RepositoryErrorCode, string> = {
   QUOTA_EXCEEDED: 'No se pudo eliminar por un problema de almacenamiento.',

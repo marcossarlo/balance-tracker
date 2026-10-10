@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { RepositoryError, type RepositoryErrorCode } from '../core/errors';
+import { toRepositoryErrorCode as toCode, type RepositoryErrorCode } from '../core/errors';
 import { getLocalToday, getWeeklyTrends } from '../core/time-entry.repo';
 import type { WeeklyTrendPoint } from '../core/types';
 
@@ -10,9 +10,6 @@ export interface UseWeeklyTrends {
   refresh: () => void;
 }
 
-function toCode(error: unknown): RepositoryErrorCode {
-  return error instanceof RepositoryError ? error.code : 'UNKNOWN';
-}
 
 export function useWeeklyTrends(endDate: string = getLocalToday()): UseWeeklyTrends {
   const [points, setPoints] = useState<WeeklyTrendPoint[]>([]);

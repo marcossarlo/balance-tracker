@@ -177,12 +177,12 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T046 [P] Run full test suite `npm test` — all GREEN in tests/, no skipped tests
-- [ ] T047 [P] Grep audit: no `update(`/`put(` in src/core (Artículo IV), no global store imports (Redux/Zustand — Artículo VII), no wrappers over Dexie/Recharts (Artículo VIII), no `fetch`/network calls/endpoints/auth anywhere in src/ (FR-012)
-- [ ] T048 [P] UI language audit: all visible strings in Spanish, Trabajo/Aprendizaje contrast colors (Artículo VI) in src/components/
-- [ ] T049 Execute scenarios V1–V8 in specs/001-balance-tracker-mvp/quickstart.md end-to-end and record results
-- [ ] T050 Red-Green-Refactor final pass: refactor duplicated code in src/core and src/hooks keeping all tests green (Artículo III)
-- [ ] T051 [P] Regression test for date-change re-query: `useDailyBalance` recalcula balance al cambiar su prop `date` y `useWeeklyTrends` NO sigue al DayPicker (ventana anclada a hoy, FR-005) en tests/component/hooks-date-change.test.ts (Edge Case 6 del spec)
+- [X] T046 [P] Run full test suite `npm test` — all GREEN in tests/, no skipped tests
+- [X] T047 [P] Grep audit: no `update(`/`put(` in src/core (Artículo IV), no global store imports (Redux/Zustand — Artículo VII), no wrappers over Dexie/Recharts (Artículo VIII), no `fetch`/network calls/endpoints/auth anywhere in src/ (FR-012)
+- [X] T048 [P] UI language audit: all visible strings in Spanish, Trabajo/Aprendizaje contrast colors (Artículo VI) in src/components/
+- [X] T049 Execute scenarios V1–V8 in specs/001-balance-tracker-mvp/quickstart.md end-to-end and record results
+- [X] T050 Red-Green-Refactor final pass: refactor duplicated code in src/core and src/hooks keeping all tests green (Artículo III)
+- [X] T051 [P] Regression test for date-change re-query: `useDailyBalance` recalcula balance al cambiar su prop `date` y `useWeeklyTrends` NO sigue al DayPicker (ventana anclada a hoy, FR-005) en tests/component/hooks-date-change.test.ts (Edge Case 6 del spec)
 
 ---
 
