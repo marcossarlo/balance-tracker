@@ -64,19 +64,19 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 ### Tests for User Story 1 ⚠️ (WRITE FIRST — MUST FAIL BEFORE IMPLEMENTATION)
 
-- [ ] T009 [P] [US1] Failing integration tests for `createTimeEntry` in tests/integration/time-entry-create.test.ts: persists entry with local `date` YYYY-MM-DD of today, assigns UUID `id`, sets `timestampCreation`, returns typed `TimeEntry` (Artículo IX: real fake-indexeddb, no Dexie mocks)
-- [ ] T010 [P] [US1] Failing validation tests in tests/integration/time-entry-validation.test.ts: rejects `category` outside `'WORK' | 'LEARNING'` with code `'VALIDATION'`; rejects `timeValue` outside `DURATION_VALUES` (ej. 45) with code `'VALIDATION'`; rejects empty/whitespace description and >200 chars
-- [ ] T011 [US1] Run `npm test` and confirm T009/T010 fail RED before any production code in tests/integration/time-entry-create.test.ts and tests/integration/time-entry-validation.test.ts (Artículo III)
+- [X] T009 [P] [US1] Failing integration tests for `createTimeEntry` in tests/integration/time-entry-create.test.ts: persists entry with local `date` YYYY-MM-DD of today, assigns UUID `id`, sets `timestampCreation`, returns typed `TimeEntry` (Artículo IX: real fake-indexeddb, no Dexie mocks)
+- [X] T010 [P] [US1] Failing validation tests in tests/integration/time-entry-validation.test.ts: rejects `category` outside `'WORK' | 'LEARNING'` with code `'VALIDATION'`; rejects `timeValue` outside `DURATION_VALUES` (ej. 45) with code `'VALIDATION'`; rejects empty/whitespace description and >200 chars
+- [X] T011 [US1] Run `npm test` and confirm T009/T010 fail RED before any production code in tests/integration/time-entry-create.test.ts and tests/integration/time-entry-validation.test.ts (Artículo III)
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Implement `createTimeEntry` with validation in src/core/time-entry.repo.ts (constraints quoted: category enum, `timeValue` ∈ {15,30,60,120,180,240}, description trimmed 1..200 chars; wraps native IDB exceptions as `RepositoryError`) — turns T009/T010 GREEN
-- [ ] T013 [US1] Implement `listEntriesByDate(date)` using Dexie native `where('date').equals(...)` in src/core/time-entry.repo.ts (Artículo VIII: sin wrappers)
-- [ ] T014 [US1] Implement `useTimeEntries(date)` hook in src/hooks/useTimeEntries.ts: local state, `save()` resolving `{ ok: true, entry } | { ok: false, code }` (never rejects), `refresh()` per contracts/hooks.md
-- [ ] T015 [P] [US1] Create QuickEntryBar component in src/components/QuickEntryBar.tsx: selector Trabajo/Aprendizaje (colores opuestos), input descripción, botones de duración 15/30/60/120/180/240 min, labels en español, reset automático y silencioso tras guardar con éxito (FR-008), avisos amigables sin stack traces (FR-009)
-- [ ] T016 [P] [US1] Create EntryList component in src/components/EntryList.tsx: lista de entradas del día con etiquetas en español (Trabajo/Aprendizaje, duración, descripción)
-- [ ] T017 [US1] Wire US1 in src/App.tsx: QuickEntryBar + EntryList + useTimeEntries para el día de hoy
-- [ ] T018 [US1] Component test in tests/component/QuickEntryBar.test.tsx: on save success form resets silently; on `{ ok: false }` shows non-blocking Spanish toast with `role="status"` (~5s, per FR-009) and form state preserved
+- [X] T012 [US1] Implement `createTimeEntry` with validation in src/core/time-entry.repo.ts (constraints quoted: category enum, `timeValue` ∈ {15,30,60,120,180,240}, description trimmed 1..200 chars; wraps native IDB exceptions as `RepositoryError`) — turns T009/T010 GREEN
+- [X] T013 [US1] Implement `listEntriesByDate(date)` using Dexie native `where('date').equals(...)` in src/core/time-entry.repo.ts (Artículo VIII: sin wrappers)
+- [X] T014 [US1] Implement `useTimeEntries(date)` hook in src/hooks/useTimeEntries.ts: local state, `save()` resolving `{ ok: true, entry } | { ok: false, code }` (never rejects), `refresh()` per contracts/hooks.md
+- [X] T015 [P] [US1] Create QuickEntryBar component in src/components/QuickEntryBar.tsx: selector Trabajo/Aprendizaje (colores opuestos), input descripción, botones de duración 15/30/60/120/180/240 min, labels en español, reset automático y silencioso tras guardar con éxito (FR-008), avisos amigables sin stack traces (FR-009)
+- [X] T016 [P] [US1] Create EntryList component in src/components/EntryList.tsx: lista de entradas del día con etiquetas en español (Trabajo/Aprendizaje, duración, descripción)
+- [X] T017 [US1] Wire US1 in src/App.tsx: QuickEntryBar + EntryList + useTimeEntries para el día de hoy
+- [X] T018 [US1] Component test in tests/component/QuickEntryBar.test.tsx: on save success form resets silently; on `{ ok: false }` shows non-blocking Spanish toast with `role="status"` (~5s, per FR-009) and form state preserved
 
 **Checkpoint**: US1 fully functional and testable independently (MVP).
 
