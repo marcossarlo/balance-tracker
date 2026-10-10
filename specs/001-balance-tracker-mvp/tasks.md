@@ -139,15 +139,15 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 ### Tests for User Story 4 ⚠️ (WRITE FIRST — MUST FAIL)
 
-- [ ] T036 [P] [US4] Failing integration tests for `deleteTimeEntry(id)` in tests/integration/time-entry-delete.test.ts: removes record (subsequent `listEntriesByDate` excludes it); idempotent (deleting nonexistent id resolves without error); existing entries unaffected; native IDB failure maps to `RepositoryError` code
-- [ ] T037 [US4] Run `npm test` and confirm T036 fails RED in tests/integration/time-entry-delete.test.ts (Artículo III)
+- [X] T036 [P] [US4] Failing integration tests for `deleteTimeEntry(id)` in tests/integration/time-entry-delete.test.ts: removes record (subsequent `listEntriesByDate` excludes it); idempotent (deleting nonexistent id resolves without error); existing entries unaffected; native IDB failure maps to `RepositoryError` code
+- [X] T037 [US4] Run `npm test` and confirm T036 fails RED in tests/integration/time-entry-delete.test.ts (Artículo III)
 
 ### Implementation for User Story 4
 
-- [ ] T038 [US4] Implement `deleteTimeEntry(id)` in src/core/time-entry.repo.ts — turns T036 GREEN; NO `update`/`put` functions exist anywhere in src/core (Artículo IV)
-- [ ] T039 [US4] Add `remove(id)` to src/hooks/useTimeEntries.ts: resolves `{ ok } | { ok: false, code }`, triggers `refresh` of balance/trends hooks on success
-- [ ] T040 [US4] Add delete affordance to src/components/EntryList.tsx: "Eliminar" button with native `confirm()` in Spanish before calling `remove` (research.md R-09); friendly Spanish notification on `{ ok: false }` and entry remains visible (FR-009, edge case)
-- [ ] T041 [US4] Component test in tests/component/EntryList.test.tsx: cancel confirm keeps entry; confirm removes it from DOM; failed remove shows non-blocking Spanish toast `role="status"` (FR-009) and keeps entry rendered
+- [X] T038 [US4] Implement `deleteTimeEntry(id)` in src/core/time-entry.repo.ts — turns T036 GREEN; NO `update`/`put` functions exist anywhere in src/core (Artículo IV)
+- [X] T039 [US4] Add `remove(id)` to src/hooks/useTimeEntries.ts: resolves `{ ok } | { ok: false, code }`, triggers `refresh` of balance/trends hooks on success
+- [X] T040 [US4] Add delete affordance to src/components/EntryList.tsx: "Eliminar" button with native `confirm()` in Spanish before calling `remove` (research.md R-09); friendly Spanish notification on `{ ok: false }` and entry remains visible (FR-009, edge case)
+- [X] T041 [US4] Component test in tests/component/EntryList.test.tsx: cancel confirm keeps entry; confirm removes it from DOM; failed remove shows non-blocking Spanish toast `role="status"` (FR-009) and keeps entry rendered
 
 **Checkpoint**: Correction loop complete; all 4 core stories work independently.
 

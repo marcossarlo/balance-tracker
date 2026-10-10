@@ -11,16 +11,28 @@ import { useWeeklyTrends } from './hooks/useWeeklyTrends';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(() => getLocalToday());
-  const { entries, loading, save } = useTimeEntries(selectedDate);
+  const { entries, loading, save, remove } = useTimeEntries(selectedDate);
   const { balance, loading: balanceLoading, refresh: refreshBalance } =
     useDailyBalance(selectedDate);
   const { points, loading: trendsLoading, refresh: refreshTrends } = useWeeklyTrends();
 
+  async function refreshAll() {
+    refreshBalance();
+    refreshTrends();
+  }
+
   async function handleSave(input: Parameters<typeof save>[0]) {
     const result = await save(input);
     if (result.ok) {
-      refreshBalance();
-      refreshTrends();
+      await refreshAll();
+    }
+    return result;
+  }
+
+  async function handleRemove(id: string) {
+    const result = await remove(id);
+    if (result.ok) {
+      await refreshAll();
     }
     return result;
   }
@@ -34,7 +46,7 @@ export default function App() {
       <div className="mt-4">
         {selectedDate === getLocalToday() && <QuickEntryBar onSave={handleSave} />}
       </div>
-      <EntryList entries={entries} loading={loading} />
+      <EntryList entries={entries} loading={loading} onRemove={handleRemove} />
       <WeeklyTrends points={points} loading={trendsLoading} />
     </main>
   );

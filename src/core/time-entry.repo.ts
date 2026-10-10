@@ -86,6 +86,14 @@ export async function listEntriesByRange(
   }
 }
 
+export async function deleteTimeEntry(id: string): Promise<void> {
+  try {
+    await db.timeEntries.delete(id);
+  } catch (error) {
+    throw mapIndexedDbError(error);
+  }
+}
+
 export async function getWeeklyTrends(endDate: string): Promise<WeeklyTrendPoint[]> {
   const weekDates = buildWeekDates(endDate);
   const entries = await listEntriesByRange(weekDates[0], endDate);

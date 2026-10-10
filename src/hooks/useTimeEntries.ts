@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { RepositoryError, type RepositoryErrorCode } from '../core/errors';
 import {
   createTimeEntry,
+  deleteTimeEntry,
   listEntriesByDate,
   type CreateTimeEntryInput,
 } from '../core/time-entry.repo';
@@ -11,12 +12,15 @@ export type SaveResult =
   | { ok: true; entry: TimeEntry }
   | { ok: false; code: RepositoryErrorCode };
 
+export type RemoveResult = { ok: true } | { ok: false; code: RepositoryErrorCode };
+
 export interface UseTimeEntries {
   entries: TimeEntry[];
   loading: boolean;
   error: RepositoryErrorCode | null;
   refresh: () => void;
   save: (input: CreateTimeEntryInput) => Promise<SaveResult>;
+  remove: (id: string) => Promise<RemoveResult>;
 }
 
 function toCode(error: unknown): RepositoryErrorCode {
@@ -60,5 +64,18 @@ export function useTimeEntries(date: string): UseTimeEntries {
     [refresh],
   );
 
-  return { entries, loading, error, refresh, save };
+  const remove = useCallback(
+    async (id: string): Promise<RemoveResult> => {
+      try {
+        await deleteTimeEntry(id);
+        refresh();
+        return { ok: true };
+      } catch (err) {
+        return { ok: false, code: toCode(err) };
+      }
+    },
+    [refresh],
+  );
+
+  return { entries, loading, error, refresh, save, remove };
 }
