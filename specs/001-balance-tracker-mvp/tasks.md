@@ -90,18 +90,18 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 ### Tests for User Story 2 ⚠️ (WRITE FIRST — MUST FAIL)
 
-- [ ] T019 [P] [US2] Failing unit tests for pure `computeDailyBalance(entries)` in tests/unit/daily-balance.test.ts: sums `timeValue` by `category` into `{ work, learning, total }` minutes; empty array ⇒ all zeros; ignores entries from other dates
-- [ ] T020 [P] [US2] Failing integration tests for `getDailyBalance(date)` in tests/integration/daily-balance.test.ts: uses the `date` index (entries on scattered days return only target-day totals); no entries ⇒ `{ work: 0, learning: 0, total: 0 }`
-- [ ] T021 [US2] Run `npm test` and confirm T019/T020 fail RED in tests/unit/daily-balance.test.ts and tests/integration/daily-balance.test.ts (Artículo III)
+- [X] T019 [P] [US2] Failing unit tests for pure `computeDailyBalance(entries)` in tests/unit/daily-balance.test.ts: sums `timeValue` by `category` into `{ work, learning, total }` minutes; empty array ⇒ all zeros; ignores entries from other dates
+- [X] T020 [P] [US2] Failing integration tests for `getDailyBalance(date)` in tests/integration/daily-balance.test.ts: uses the `date` index (entries on scattered days return only target-day totals); no entries ⇒ `{ work: 0, learning: 0, total: 0 }`
+- [X] T021 [US2] Run `npm test` and confirm T019/T020 fail RED in tests/unit/daily-balance.test.ts and tests/integration/daily-balance.test.ts (Artículo III)
 
 ### Implementation for User Story 2
 
-- [ ] T022 [US2] Implement pure `computeDailyBalance` in src/core/daily-balance.ts (Función pura, sin IO — Artículo I) — turns T019 GREEN
-- [ ] T023 [US2] Implement `getDailyBalance(date)` in src/core/time-entry.repo.ts delegating to the pure function — turns T020 GREEN
-- [ ] T024 [US2] Implement `useDailyBalance(date)` hook in src/hooks/useDailyBalance.ts: `{ balance, loading, error, refresh }`, always-defined zeros, per contracts/hooks.md
-- [ ] T025 [P] [US2] Create SplitDashboard component in src/components/SplitDashboard.tsx: "Trabajo" vs "Aprendizaje" totals in minutes with contrastante opposite colors (Artículo VI), Spanish labels, empty-state friendly
-- [ ] T026 [P] [US2] Create DayPicker component in src/components/DayPicker.tsx: select consultation day, labels in Spanish
-- [ ] T027 [US2] Wire US2 in src/App.tsx: DayPicker + SplitDashboard consuming `useDailyBalance`, refresh after save/delete
+- [X] T022 [US2] Implement pure `computeDailyBalance` in src/core/daily-balance.ts (Función pura, sin IO — Artículo I) — turns T019 GREEN
+- [X] T023 [US2] Implement `getDailyBalance(date)` in src/core/time-entry.repo.ts delegating to the pure function — turns T020 GREEN
+- [X] T024 [US2] Implement `useDailyBalance(date)` hook in src/hooks/useDailyBalance.ts: `{ balance, loading, error, refresh }`, always-defined zeros, per contracts/hooks.md
+- [X] T025 [P] [US2] Create SplitDashboard component in src/components/SplitDashboard.tsx: "Trabajo" vs "Aprendizaje" totals in minutes with contrastante opposite colors (Artículo VI), Spanish labels, empty-state friendly
+- [X] T026 [P] [US2] Create DayPicker component in src/components/DayPicker.tsx: select consultation day, labels in Spanish
+- [X] T027 [US2] Wire US2 in src/App.tsx: DayPicker + SplitDashboard consuming `useDailyBalance`, refresh after save/delete
 
 **Checkpoint**: US1 AND US2 both work independently.
 

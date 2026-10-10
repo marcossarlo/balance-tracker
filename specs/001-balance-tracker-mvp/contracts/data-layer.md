@@ -57,8 +57,8 @@ export function getWeeklyTrends(endDate: string): Promise<WeeklyTrendPoint[]>; /
 ```
 
 ```ts
-// src/core/daily-balance.ts  (pura, sin IO)
-export function computeDailyBalance(entries: TimeEntry[]): DailyBalance;
+// src/core/daily-balance.ts  (pura, sin IO; filtra internamente por `date`)
+export function computeDailyBalance(entries: TimeEntry[], date: string): DailyBalance;
 
 // src/core/weekly-trends.ts  (pura, sin IO)
 export function computeWeeklyTrends(

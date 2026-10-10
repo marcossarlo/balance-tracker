@@ -1,6 +1,7 @@
 import { db } from './db';
 import { mapIndexedDbError, RepositoryError } from './errors';
-import { DURATION_VALUES, type Category, type DurationValue, type TimeEntry } from './types';
+import { DURATION_VALUES, type Category, type DailyBalance, type DurationValue, type TimeEntry } from './types';
+import { computeDailyBalance } from './daily-balance';
 
 export interface CreateTimeEntryInput {
   category: Category;
@@ -56,4 +57,9 @@ export async function listEntriesByDate(date: string): Promise<TimeEntry[]> {
   } catch (error) {
     throw mapIndexedDbError(error);
   }
+}
+
+export async function getDailyBalance(date: string): Promise<DailyBalance> {
+  const entries = await listEntriesByDate(date);
+  return computeDailyBalance(entries, date);
 }
