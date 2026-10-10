@@ -3,20 +3,24 @@ import DayPicker from './components/DayPicker';
 import EntryList from './components/EntryList';
 import QuickEntryBar from './components/QuickEntryBar';
 import SplitDashboard from './components/SplitDashboard';
+import WeeklyTrends from './components/WeeklyTrends';
 import { getLocalToday } from './core/time-entry.repo';
 import { useDailyBalance } from './hooks/useDailyBalance';
 import { useTimeEntries } from './hooks/useTimeEntries';
+import { useWeeklyTrends } from './hooks/useWeeklyTrends';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(() => getLocalToday());
   const { entries, loading, save } = useTimeEntries(selectedDate);
   const { balance, loading: balanceLoading, refresh: refreshBalance } =
     useDailyBalance(selectedDate);
+  const { points, loading: trendsLoading, refresh: refreshTrends } = useWeeklyTrends();
 
   async function handleSave(input: Parameters<typeof save>[0]) {
     const result = await save(input);
     if (result.ok) {
       refreshBalance();
+      refreshTrends();
     }
     return result;
   }
@@ -31,6 +35,7 @@ export default function App() {
         {selectedDate === getLocalToday() && <QuickEntryBar onSave={handleSave} />}
       </div>
       <EntryList entries={entries} loading={loading} />
+      <WeeklyTrends points={points} loading={trendsLoading} />
     </main>
   );
 }

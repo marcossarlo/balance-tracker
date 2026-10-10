@@ -115,17 +115,17 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 ### Tests for User Story 3 ⚠️ (WRITE FIRST — MUST FAIL)
 
-- [ ] T028 [P] [US3] Failing unit tests for pure `computeWeeklyTrends(entries, weekDates)` in tests/unit/weekly-trends.test.ts: always returns exactly 7 `WeeklyTrendPoint`; chronological order; missing days ⇒ `work: 0, learning: 0`; `label` format `dd/mm`
-- [ ] T029 [P] [US3] Failing integration tests for `listEntriesByRange` + `getWeeklyTrends` in tests/integration/weekly-trends.test.ts: `where('date').between(start, end, inclusive)` over the `date` index; returns 7 points regardless of data presence
-- [ ] T030 [US3] Run `npm test` and confirm T028/T029 fail RED in tests/unit/weekly-trends.test.ts and tests/integration/weekly-trends.test.ts (Artículo III)
+- [X] T028 [P] [US3] Failing unit tests for pure `computeWeeklyTrends(entries, weekDates)` in tests/unit/weekly-trends.test.ts: always returns exactly 7 `WeeklyTrendPoint`; chronological order; missing days ⇒ `work: 0, learning: 0`; `label` format `dd/mm`
+- [X] T029 [P] [US3] Failing integration tests for `listEntriesByRange` + `getWeeklyTrends` in tests/integration/weekly-trends.test.ts: `where('date').between(start, end, inclusive)` over the `date` index; returns 7 points regardless of data presence
+- [X] T030 [US3] Run `npm test` and confirm T028/T029 fail RED in tests/unit/weekly-trends.test.ts and tests/integration/weekly-trends.test.ts (Artículo III)
 
 ### Implementation for User Story 3
 
-- [ ] T031 [US3] Implement pure `computeWeeklyTrends` in src/core/weekly-trends.ts (pure transform to Recharts shape — Artículo I/II; UI never transforms) — turns T028 GREEN
-- [ ] T032 [US3] Implement `listEntriesByRange(startDate, endDate)` and `getWeeklyTrends(endDate)` in src/core/time-entry.repo.ts (default endDate = local today) — turns T029 GREEN
-- [ ] T033 [US3] Implement `useWeeklyTrends(endDate?)` hook in src/hooks/useWeeklyTrends.ts: `{ points, loading, error, refresh }`, exactly 7 points, per contracts/hooks.md
-- [ ] T034 [US3] Create WeeklyTrends component in src/components/WeeklyTrends.tsx: Recharts consumed directly with `dataKey="work"` / `dataKey="learning"` (Artículo VIII: sin wrappers), Spanish legend/axis labels, 7 days always visible
-- [ ] T035 [US3] Wire US3 in src/App.tsx: WeeklyTrends consuming `useWeeklyTrends` with window anchored to local today, independent of DayPicker per FR-005
+- [X] T031 [US3] Implement pure `computeWeeklyTrends` in src/core/weekly-trends.ts (pure transform to Recharts shape — Artículo I/II; UI never transforms) — turns T028 GREEN
+- [X] T032 [US3] Implement `listEntriesByRange(startDate, endDate)` and `getWeeklyTrends(endDate)` in src/core/time-entry.repo.ts (default endDate = local today) — turns T029 GREEN
+- [X] T033 [US3] Implement `useWeeklyTrends(endDate?)` hook in src/hooks/useWeeklyTrends.ts: `{ points, loading, error, refresh }`, exactly 7 points, per contracts/hooks.md
+- [X] T034 [US3] Create WeeklyTrends component in src/components/WeeklyTrends.tsx: Recharts consumed directly with `dataKey="work"` / `dataKey="learning"` (Artículo VIII: sin wrappers), Spanish legend/axis labels, 7 days always visible
+- [X] T035 [US3] Wire US3 in src/App.tsx: WeeklyTrends consuming `useWeeklyTrends` with window anchored to local today, independent of DayPicker per FR-005
 
 **Checkpoint**: All read-side stories (US1–US3) independently functional.
 

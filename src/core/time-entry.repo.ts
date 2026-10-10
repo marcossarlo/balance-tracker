@@ -1,7 +1,15 @@
 import { db } from './db';
 import { mapIndexedDbError, RepositoryError } from './errors';
-import { DURATION_VALUES, type Category, type DailyBalance, type DurationValue, type TimeEntry } from './types';
+import {
+  DURATION_VALUES,
+  type Category,
+  type DailyBalance,
+  type DurationValue,
+  type TimeEntry,
+  type WeeklyTrendPoint,
+} from './types';
 import { computeDailyBalance } from './daily-balance';
+import { buildWeekDates, computeWeeklyTrends } from './weekly-trends';
 
 export interface CreateTimeEntryInput {
   category: Category;
@@ -62,4 +70,24 @@ export async function listEntriesByDate(date: string): Promise<TimeEntry[]> {
 export async function getDailyBalance(date: string): Promise<DailyBalance> {
   const entries = await listEntriesByDate(date);
   return computeDailyBalance(entries, date);
+}
+
+export async function listEntriesByRange(
+  startDate: string,
+  endDate: string,
+): Promise<TimeEntry[]> {
+  if (!DATE_RE.test(startDate) || !DATE_RE.test(endDate)) {
+    throw new RepositoryError('VALIDATION', 'dates must be YYYY-MM-DD');
+  }
+  try {
+    return await db.timeEntries.where('date').between(startDate, endDate, true, true).toArray();
+  } catch (error) {
+    throw mapIndexedDbError(error);
+  }
+}
+
+export async function getWeeklyTrends(endDate: string): Promise<WeeklyTrendPoint[]> {
+  const weekDates = buildWeekDates(endDate);
+  const entries = await listEntriesByRange(weekDates[0], endDate);
+  return computeWeeklyTrends(entries, weekDates);
 }
