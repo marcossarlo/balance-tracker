@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/core/db.ts","./src/core/errors.ts","./src/core/types.ts","./tests/setup.ts","./tests/helpers/db.ts","./tests/integration/db-schema.test.ts","./tests/unit/errors.test.ts"],"version":"5.8.3"}

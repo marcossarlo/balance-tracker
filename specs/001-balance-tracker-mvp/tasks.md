@@ -32,10 +32,10 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Scaffold Vite + React + TypeScript project per plan.md (package.json, vite.config.ts, tsconfig.json, index.html, src/main.tsx, src/App.tsx placeholder) at repository root
-- [ ] T002 [P] Configure Tailwind CSS in tailwind.config.js and src/index.css
-- [ ] T003 [P] Configure Vitest + `fake-indexeddb` global setup in vite.config.ts and tests/setup.ts (fresh in-memory DB per suite; no Dexie mocks per Artículo IX)
-- [ ] T004 [P] Create directory skeleton per plan.md: src/core/, src/hooks/, src/components/, tests/unit/, tests/integration/, tests/component/
+- [X] T001 Scaffold Vite + React + TypeScript project per plan.md (package.json, vite.config.ts, tsconfig.json, index.html, src/main.tsx, src/App.tsx placeholder) at repository root
+- [X] T002 [P] Configure Tailwind CSS in tailwind.config.js and src/index.css
+- [X] T003 [P] Configure Vitest + `fake-indexeddb` global setup in vite.config.ts and tests/setup.ts (fresh in-memory DB per suite; no Dexie mocks per Artículo IX)
+- [X] T004 [P] Create directory skeleton per plan.md: src/core/, src/hooks/, src/components/, tests/unit/, tests/integration/, tests/component/
 
 **Checkpoint**: `npm run dev` y `npm test` funcionan con suite vacía.
 
@@ -47,10 +47,10 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Create core types in src/core/types.ts: `Category = 'WORK' | 'LEARNING'`, `DURATION_VALUES = [15, 30, 60, 120, 180, 240] as const`, `DurationValue`, `TimeEntry` (id UUID, category, description, timeValue, date 'YYYY-MM-DD', timestampCreation), `DailyBalance { work, learning, total }`, `WeeklyTrendPoint { date, label, work, learning }` per contracts/data-layer.md
-- [ ] T006 Create Dexie schema v1 in src/core/db.ts: table `timeEntries` with PK `&id`, index `date` (non-unique) and compound index `[date+category]` per research.md R-01
-- [ ] T007 [P] Create domain error model in src/core/errors.ts: `RepositoryErrorCode = 'QUOTA_EXCEEDED' | 'DB_UNAVAILABLE' | 'VALIDATION' | 'UNKNOWN'` and `RepositoryError` class per data-model.md; map native IndexedDB exceptions (QuotaExceededError, AbortError, InvalidStateError) to codes per research.md R-06
-- [ ] T008 [P] Create test DB helper in tests/helpers/db.ts: returns a fresh Dexie instance backed by fake-indexeddb per suite (per data-model.md, índice `date` real)
+- [X] T005 Create core types in src/core/types.ts: `Category = 'WORK' | 'LEARNING'`, `DURATION_VALUES = [15, 30, 60, 120, 180, 240] as const`, `DurationValue`, `TimeEntry` (id UUID, category, description, timeValue, date 'YYYY-MM-DD', timestampCreation), `DailyBalance { work, learning, total }`, `WeeklyTrendPoint { date, label, work, learning }` per contracts/data-layer.md
+- [X] T006 Create Dexie schema v1 in src/core/db.ts: table `timeEntries` with PK `&id`, index `date` (non-unique) and compound index `[date+category]` per research.md R-01
+- [X] T007 [P] Create domain error model in src/core/errors.ts: `RepositoryErrorCode = 'QUOTA_EXCEEDED' | 'DB_UNAVAILABLE' | 'VALIDATION' | 'UNKNOWN'` and `RepositoryError` class per data-model.md; map native IndexedDB exceptions (QuotaExceededError, AbortError, InvalidStateError) to codes per research.md R-06
+- [X] T008 [P] Create test DB helper in tests/helpers/db.ts: returns a fresh Dexie instance backed by fake-indexeddb per suite (per data-model.md, índice `date` real)
 
 **Checkpoint**: Foundation ready — user story implementation can now begin.
 
