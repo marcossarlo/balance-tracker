@@ -30,7 +30,7 @@ Feature incremental sobre el proyecto existente: `src/core`, `src/hooks`,
 
 **Purpose**: Confirmar base sana antes de tocar código
 
-- [ ] T001 Run baseline verification: `npm test` and `npx tsc -b` at repository root must be green (56 tests from feature 001) before starting
+- [X] T001 Run baseline verification: `npm test` and `npx tsc -b` at repository root must be green (56 tests from feature 001) before starting
 
 ---
 
@@ -40,8 +40,8 @@ Feature incremental sobre el proyecto existente: `src/core`, `src/hooks`,
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 Extend RepositoryErrorCode with `'BACKUP_INVALID' | 'BACKUP_TOO_LARGE'` in src/core/errors.ts per data-model.md error model (keep existing codes unchanged)
-- [ ] T003 [P] Create BackupFile interface and constants in src/core/backup-file.ts: `BACKUP_APP = 'balance-tracker'`, `BACKUP_VERSION = 1`, `MAX_BACKUP_TEXT_BYTES = 10 * 1024 * 1024`, `BackupFile { app, version, exportedAt, entries: TimeEntry[] }` per contracts/backup-contract.md (types/constants only; functions come in story phases)
+- [X] T002 Extend RepositoryErrorCode with `'BACKUP_INVALID' | 'BACKUP_TOO_LARGE'` in src/core/errors.ts per data-model.md error model (keep existing codes unchanged)
+- [X] T003 [P] Create BackupFile interface and constants in src/core/backup-file.ts: `BACKUP_APP = 'balance-tracker'`, `BACKUP_VERSION = 1`, `MAX_BACKUP_TEXT_BYTES = 10 * 1024 * 1024`, `BackupFile { app, version, exportedAt, entries: TimeEntry[] }` per contracts/backup-contract.md (types/constants only; functions come in story phases)
 
 **Checkpoint**: Foundation ready — US1 and US2 can begin.
 
@@ -55,18 +55,18 @@ Feature incremental sobre el proyecto existente: `src/core`, `src/hooks`,
 
 ### Tests for User Story 1 ⚠️ (WRITE FIRST — MUST FAIL)
 
-- [ ] T004 [P] [US1] Failing unit tests for `serializeBackupFile` and `buildBackupFileName` in tests/unit/backup-file.test.ts: output is valid JSON with `app: 'balance-tracker'`, `version: 1`, `entries` preserving all TimeEntry fields; empty list ⇒ `entries: []`; `buildBackupFileName('2026-10-10')` ⇒ `'balance-tracker-2026-10-10.json'`; round-trip serialize→parse idéntico
-- [ ] T005 [P] [US1] Failing integration tests for `exportAllEntries` in tests/integration/backup-export.test.ts (fake-indexeddb real): exports every stored entry across scattered dates; empty DB ⇒ parseable JSON with `entries: []`
-- [ ] T006 [US1] Run `npm test` and confirm T004/T005 fail RED in tests/unit/backup-file.test.ts and tests/integration/backup-export.test.ts (Artículo III)
+- [X] T004 [P] [US1] Failing unit tests for `serializeBackupFile` and `buildBackupFileName` in tests/unit/backup-file.test.ts: output is valid JSON with `app: 'balance-tracker'`, `version: 1`, `entries` preserving all TimeEntry fields; empty list ⇒ `entries: []`; `buildBackupFileName('2026-10-10')` ⇒ `'balance-tracker-2026-10-10.json'`; round-trip serialize→parse idéntico
+- [X] T005 [P] [US1] Failing integration tests for `exportAllEntries` in tests/integration/backup-export.test.ts (fake-indexeddb real): exports every stored entry across scattered dates; empty DB ⇒ parseable JSON with `entries: []`
+- [X] T006 [US1] Run `npm test` and confirm T004/T005 fail RED in tests/unit/backup-file.test.ts and tests/integration/backup-export.test.ts (Artículo III)
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Implement `serializeBackupFile(entries, now?)` and `buildBackupFileName(dateIso)` in src/core/backup-file.ts (pure functions, no IO) — turns T004 GREEN
-- [ ] T008 [US1] Implement `exportAllEntries(): Promise<string>` in src/core/backup.repo.ts using native Dexie `toArray()` read + `serializeBackupFile` — turns T005 GREEN
-- [ ] T009 [US1] Create `useBackup` hook with `exportData()` in src/hooks/useBackup.ts: `exporting` flag, Blob + `URL.createObjectURL` + synthetic `<a download>` click + `revokeObjectURL` per research.md R-02; resolves `{ ok } | { ok: false, code }`, never rejects; error codes via `toRepositoryErrorCode`
-- [ ] T010 [P] [US1] Create DataTransferButtons component in src/components/DataTransferButtons.tsx: "Exportar datos" button (Spanish labels), disabled while exporting, `role="status"` friendly toast on `{ ok: false }` per FR-008
-- [ ] T011 [US1] Wire export into src/App.tsx: `useBackup().exportData` passed to DataTransferButtons alongside existing components
-- [ ] T012 [US1] Component test in tests/component/DataTransferButtons.test.tsx: export click calls `onExport`; failure shows Spanish `role="status"` toast; button disabled while `exporting=true`
+- [X] T007 [US1] Implement `serializeBackupFile(entries, now?)` and `buildBackupFileName(dateIso)` in src/core/backup-file.ts (pure functions, no IO) — turns T004 GREEN
+- [X] T008 [US1] Implement `exportAllEntries(): Promise<string>` in src/core/backup.repo.ts using native Dexie `toArray()` read + `serializeBackupFile` — turns T005 GREEN
+- [X] T009 [US1] Create `useBackup` hook with `exportData()` in src/hooks/useBackup.ts: `exporting` flag, Blob + `URL.createObjectURL` + synthetic `<a download>` click + `revokeObjectURL` per research.md R-02; resolves `{ ok } | { ok: false, code }`, never rejects; error codes via `toRepositoryErrorCode`
+- [X] T010 [P] [US1] Create DataTransferButtons component in src/components/DataTransferButtons.tsx: "Exportar datos" button (Spanish labels), disabled while exporting, `role="status"` friendly toast on `{ ok: false }` per FR-008
+- [X] T011 [US1] Wire export into src/App.tsx: `useBackup().exportData` passed to DataTransferButtons alongside existing components
+- [X] T012 [US1] Component test in tests/component/DataTransferButtons.test.tsx: export click calls `onExport`; failure shows Spanish `role="status"` toast; button disabled while `exporting=true`
 
 **Checkpoint**: US1 fully functional — user can back up data.
 
@@ -80,18 +80,18 @@ Feature incremental sobre el proyecto existente: `src/core`, `src/hooks`,
 
 ### Tests for User Story 2 ⚠️ (WRITE FIRST — MUST FAIL)
 
-- [ ] T013 [P] [US2] Failing unit tests for `parseBackupFile` in tests/unit/backup-file-parse.test.ts: accepts valid file (round-trip); rejects non-JSON text, non-object JSON, wrong `app`, `version: 2`, non-array `entries`, invalid entry (`timeValue: 45`, category fuera de enum, descripción >200, fecha mal formada) with `RepositoryError` code `BACKUP_INVALID`; rejects text >10MB with `BACKUP_TOO_LARGE`; never throws raw JS errors
-- [ ] T014 [P] [US2] Failing integration tests for `importBackupEntries` in tests/integration/backup-import.test.ts (fake-indexeddb real, Artículo IX): mixed ids ⇒ `{ added: 2, skipped: 1 }` with only new rows added; existing rows untouched (no update/delete); invalid entry among valid ones ⇒ `VALIDATION` error and DB unchanged (atomic); importing same file twice ⇒ second `{ added: 0, skipped: N }`
-- [ ] T015 [US2] Run `npm test` and confirm T013/T014 fail RED in tests/unit/backup-file-parse.test.ts and tests/integration/backup-import.test.ts (Artículo III)
+- [X] T013 [P] [US2] Failing unit tests for `parseBackupFile` in tests/unit/backup-file-parse.test.ts: accepts valid file (round-trip); rejects non-JSON text, non-object JSON, wrong `app`, `version: 2`, non-array `entries`, invalid entry (`timeValue: 45`, category fuera de enum, descripción >200, fecha mal formada) with `RepositoryError` code `BACKUP_INVALID`; rejects text >10MB with `BACKUP_TOO_LARGE`; never throws raw JS errors
+- [X] T014 [P] [US2] Failing integration tests for `importBackupEntries` in tests/integration/backup-import.test.ts (fake-indexeddb real, Artículo IX): mixed ids ⇒ `{ added: 2, skipped: 1 }` with only new rows added; existing rows untouched (no update/delete); invalid entry among valid ones ⇒ `VALIDATION` error and DB unchanged (atomic); importing same file twice ⇒ second `{ added: 0, skipped: N }`
+- [X] T015 [US2] Run `npm test` and confirm T013/T014 fail RED in tests/unit/backup-file-parse.test.ts and tests/integration/backup-import.test.ts (Artículo III)
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Implement `parseBackupFile(text)` in src/core/backup-file.ts: JSON.parse + validate `app`/`version`/`entries` + per-entry rules reusing `DURATION_VALUES` and `TimeEntry` constraints per data-model.md; size guard `MAX_BACKUP_TEXT_BYTES`; throws only `RepositoryError` — turns T013 GREEN
-- [ ] T017 [US2] Implement `importBackupEntries(entries)` in src/core/backup.repo.ts per research.md R-04: `bulkGet` existing ids → filter duplicates (skipped) → validate all remaining (abort whole import on any invalid) → single `bulkAdd` → return `{ added, skipped }`; no `update`/`delete`/`put` anywhere — turns T014 GREEN
-- [ ] T018 [US2] Add `importFile(file, onImported?)` to src/hooks/useBackup.ts per contracts/backup-contract.md: `file.text()` → `parseBackupFile` → `importBackupEntries`; `importing` flag; `lastImportResult`; resolves `{ ok, result } | { ok: false, code }`; invokes `onImported` on success only
-- [ ] T019 [US2] Extend DataTransferButtons in src/components/DataTransferButtons.tsx: "Importar datos" button + hidden `<input type="file" accept="application/json,.json">`; cancel selector ⇒ no calls; success shows Spanish summary `"Importadas: N · Omitidas: M"` (FR-007); friendly `role="status"` toast on failure (FR-008); both buttons disabled while `importing`
-- [ ] T020 [US2] Wire import into src/App.tsx: `importFile(file, () => { refreshBalance(); refreshEntries(); refreshTrends(); })` per research.md R-07 (FR-007 update visible views)
-- [ ] T021 [US2] Component test in tests/component/DataTransferButtons.test.tsx: file selection calls `onImport` with the File; summary "Importadas: 5 · Omitidas: 2" rendered; cancel (no change event) ⇒ no calls; failure shows friendly toast and no summary
+- [X] T016 [US2] Implement `parseBackupFile(text)` in src/core/backup-file.ts: JSON.parse + validate `app`/`version`/`entries` + per-entry rules reusing `DURATION_VALUES` and `TimeEntry` constraints per data-model.md; size guard `MAX_BACKUP_TEXT_BYTES`; throws only `RepositoryError` — turns T013 GREEN
+- [X] T017 [US2] Implement `importBackupEntries(entries)` in src/core/backup.repo.ts per research.md R-04: `bulkGet` existing ids → filter duplicates (skipped) → validate all remaining (abort whole import on any invalid) → single `bulkAdd` → return `{ added, skipped }`; no `update`/`delete`/`put` anywhere — turns T014 GREEN
+- [X] T018 [US2] Add `importFile(file, onImported?)` to src/hooks/useBackup.ts per contracts/backup-contract.md: `file.text()` → `parseBackupFile` → `importBackupEntries`; `importing` flag; `lastImportResult`; resolves `{ ok, result } | { ok: false, code }`; invokes `onImported` on success only
+- [X] T019 [US2] Extend DataTransferButtons in src/components/DataTransferButtons.tsx: "Importar datos" button + hidden `<input type="file" accept="application/json,.json">`; cancel selector ⇒ no calls; success shows Spanish summary `"Importadas: N · Omitidas: M"` (FR-007); friendly `role="status"` toast on failure (FR-008); both buttons disabled while `importing`
+- [X] T020 [US2] Wire import into src/App.tsx: `importFile(file, () => { refreshBalance(); refreshEntries(); refreshTrends(); })` per research.md R-07 (FR-007 update visible views)
+- [X] T021 [US2] Component test in tests/component/DataTransferButtons.test.tsx: file selection calls `onImport` with the File; summary "Importadas: 5 · Omitidas: 2" rendered; cancel (no change event) ⇒ no calls; failure shows friendly toast and no summary
 
 **Checkpoint**: US1 AND US2 both work independently.
 
@@ -101,11 +101,11 @@ Feature incremental sobre el proyecto existente: `src/core`, `src/hooks`,
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T022 [P] Run full test suite `npm test` — all GREEN in tests/, including new backup suites, no skipped tests
-- [ ] T023 [P] Grep audit: no `update(`/`delete(`/`put(` added in src/core/backup*.ts (Artículo IV), no new dependencies in package.json (Artículo VIII), no global store (Artículo VII)
-- [ ] T024 [P] UI language audit: "Exportar datos", "Importar datos", summary and toasts in Spanish in src/components/DataTransferButtons.tsx (Artículo VI)
-- [ ] T025 Execute scenarios V1–V7 in specs/002-json-export-import/quickstart.md end-to-end (automated + manual dev steps) and record results at the end of that file
-- [ ] T026 Red-Green-Refactor final pass: extract any duplication between backup-file/backup.repo and existing core helpers keeping all tests green (Artículo III)
+- [X] T022 [P] Run full test suite `npm test` — all GREEN in tests/, including new backup suites, no skipped tests
+- [X] T023 [P] Grep audit: no `update(`/`delete(`/`put(` added in src/core/backup*.ts (Artículo IV), no new dependencies in package.json (Artículo VIII), no global store (Artículo VII)
+- [X] T024 [P] UI language audit: "Exportar datos", "Importar datos", summary and toasts in Spanish in src/components/DataTransferButtons.tsx (Artículo VI)
+- [X] T025 Execute scenarios V1–V7 in specs/002-json-export-import/quickstart.md end-to-end (automated + manual dev steps) and record results at the end of that file
+- [X] T026 Red-Green-Refactor final pass: extract any duplication between backup-file/backup.repo and existing core helpers keeping all tests green (Artículo III)
 
 ---
 

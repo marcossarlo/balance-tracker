@@ -75,3 +75,26 @@ npm run dev          # UI para escenarios manuales
   componente botones).
 - Sin `update`/`delete`/`put` añadidos en `src/core` (búsqueda ⇒ 0).
 - V1–V7 ejecutados; resultados registrados al final del archivo.
+
+## Results — 2026-10-10
+
+Suite completa: **18 archivos, 88/88 pruebas verdes** (+32 sobre el
+baseline de 56). `tsc -b` exit 0. `npm run build` con PWA (sw.js,
+11 entries precache).
+
+| Escenario | Estado | Evidencia |
+|---|---|---|
+| V1 Serialización pura | ✓ PASS | `tests/unit/backup-file.test.ts` (4): app/version/entries, empty `[]`, nombre de archivo, round-trip |
+| V2 Parser rechaza inválidos | ✓ PASS | `tests/unit/backup-file-parse.test.ts` (14): no-JSON, no-objeto, app/version/entries incorrectos, timeValue 45, category fuera, descripción >200 y vacía, fecha mal formada, >10 MB ⇒ `BACKUP_INVALID`/`BACKUP_TOO_LARGE` |
+| V3 Import atómica + dedupe | ✓ PASS | `tests/integration/backup-import.test.ts` (5): `{added,skipped}` correcto, filas existentes intactas, inválida ⇒ `VALIDATION` + BD sin cambios, re-importar ⇒ `{added:0}`, round-trip export→import |
+| V4 Exportación | ✓ PASS | `tests/integration/backup-export.test.ts` (2): todas las entradas, BD vacía ⇒ `entries: []` |
+| V5 UI de botones | ✓ PASS | `tests/component/DataTransferButtons.test.tsx` (7): clic exporta, toast fallo ES, deshabilitados busy, selector ⇒ `onImport(file)`, resumen "Importadas: N · Omitidas: M", cancelar ⇒ sin llamadas |
+| V6 End-to-end manual (dev) | ⏳ PENDIENTE (usuario) | Descarga + re-import + restauración + archivo inválido en `npm run dev` |
+| V7 Offline | ⏳ PENDIENTE (usuario) | DevTools → Offline con app cargada |
+
+Auditorías constitución: 0 `update(`/`delete(`/`put(` en
+`src/core/backup*.ts`; 0 dependencias nuevas en package.json; 0 estado
+global; UI en español ("Exportar datos", "Importar datos", resumen).
+Refactor: validación de campos compartida extraída a
+`src/core/entry-validation.ts` (usado por `createTimeEntry` y
+`assertValidTimeEntry`), 88/88 en verde.

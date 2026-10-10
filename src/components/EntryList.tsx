@@ -13,6 +13,8 @@ const ERROR_MESSAGES: Record<RepositoryErrorCode, string> = {
   QUOTA_EXCEEDED: 'No se pudo eliminar por un problema de almacenamiento.',
   DB_UNAVAILABLE: 'No se puede acceder al almacenamiento. Inténtalo de nuevo.',
   VALIDATION: 'No se pudo eliminar: datos inválidos.',
+  BACKUP_INVALID: 'No se pudo eliminar: datos inválidos.',
+  BACKUP_TOO_LARGE: 'No se pudo eliminar: datos inválidos.',
   UNKNOWN: 'No se pudo eliminar. Inténtalo de nuevo.',
 };
 

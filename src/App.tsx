@@ -1,20 +1,23 @@
 import { useState } from 'react';
+import DataTransferButtons from './components/DataTransferButtons';
 import DayPicker from './components/DayPicker';
 import EntryList from './components/EntryList';
 import QuickEntryBar from './components/QuickEntryBar';
 import SplitDashboard from './components/SplitDashboard';
 import WeeklyTrends from './components/WeeklyTrends';
 import { getLocalToday } from './core/time-entry.repo';
+import { useBackup } from './hooks/useBackup';
 import { useDailyBalance } from './hooks/useDailyBalance';
 import { useTimeEntries } from './hooks/useTimeEntries';
 import { useWeeklyTrends } from './hooks/useWeeklyTrends';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(() => getLocalToday());
-  const { entries, loading, save, remove } = useTimeEntries(selectedDate);
+  const { entries, loading, save, remove, refresh: refreshEntries } = useTimeEntries(selectedDate);
   const { balance, loading: balanceLoading, refresh: refreshBalance } =
     useDailyBalance(selectedDate);
   const { points, loading: trendsLoading, refresh: refreshTrends } = useWeeklyTrends();
+  const { exporting, importing, lastImportResult, exportData, importFile } = useBackup();
 
   async function refreshAll() {
     refreshBalance();
@@ -37,6 +40,12 @@ export default function App() {
     return result;
   }
 
+  function handleImported() {
+    refreshEntries();
+    refreshBalance();
+    refreshTrends();
+  }
+
   return (
     <main className="mx-auto max-w-xl p-4">
       <h1 className="text-2xl font-bold text-gray-900">Balance Tracker</h1>
@@ -48,6 +57,13 @@ export default function App() {
       </div>
       <EntryList entries={entries} loading={loading} onRemove={handleRemove} />
       <WeeklyTrends points={points} loading={trendsLoading} />
+      <DataTransferButtons
+        onExport={exportData}
+        onImport={(file) => void importFile(file, handleImported)}
+        exporting={exporting}
+        importing={importing}
+        importSummary={lastImportResult}
+      />
     </main>
   );
 }
