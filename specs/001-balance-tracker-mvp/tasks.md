@@ -161,13 +161,13 @@ repositorio; 3 capas: `src/core` (datos), `src/hooks` (integración),
 
 ### Configuration & Tests for User Story 5
 
-- [ ] T042 [P] [US5] Configure `vite-plugin-pwa` in vite.config.ts per research.md R-05: `registerType: 'autoUpdate'`, Workbox `globPatterns` precaching shell (HTML/CSS/JS/manifest); generate manifest with Spanish app name
-- [ ] T043 [P] [US5] Add PWA icons and manifest assets under public/
+- [X] T042 [P] [US5] Configure `vite-plugin-pwa` in vite.config.ts per research.md R-05: `registerType: 'autoUpdate'`, Workbox `globPatterns` precaching shell (HTML/CSS/JS/manifest); generate manifest with Spanish app name
+- [X] T043 [P] [US5] Add PWA icons and manifest assets under public/
 
 ### Implementation for User Story 5
 
-- [ ] T044 [US5] Verify offline scenario per specs/001-balance-tracker-mvp/quickstart.md V7: `npm run build && npm run preview`, load once, DevTools offline, register/balance/trends/delete functional, data persists after reload — record result
-- [ ] T045 [US5] Add unit/integration regression test asserting data survives simulated DB reopen in tests/integration/persistence.test.ts (reopen Dexie instance, same fake-indexeddb backend, entries still present)
+- [X] T044 [US5] Verify offline scenario per specs/001-balance-tracker-mvp/quickstart.md V7: `npm run build && npm run preview`, load once, DevTools offline, register/balance/trends/delete functional, data persists after reload — record result
+- [X] T045 [US5] Add unit/integration regression test asserting data survives simulated DB reopen in tests/integration/persistence.test.ts (reopen Dexie instance, same fake-indexeddb backend, entries still present)
 
 **Checkpoint**: Offline parity with online behavior confirmed.
 
