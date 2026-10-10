@@ -1,7 +1,7 @@
 import { db } from './db';
 import { mapIndexedDbError, RepositoryError } from './errors';
+import { assertValidEntryFields } from './entry-validation';
 import {
-  DURATION_VALUES,
   type Category,
   type DailyBalance,
   type DurationValue,
@@ -28,21 +28,12 @@ export function getLocalToday(): string {
 }
 
 export async function createTimeEntry(input: CreateTimeEntryInput): Promise<TimeEntry> {
-  if (input.category !== 'WORK' && input.category !== 'LEARNING') {
-    throw new RepositoryError('VALIDATION', 'category must be WORK or LEARNING');
-  }
-  if (!DURATION_VALUES.includes(input.timeValue)) {
-    throw new RepositoryError('VALIDATION', 'timeValue must be in catalog');
-  }
-  const description = input.description.trim();
-  if (description.length < 1 || description.length > 200) {
-    throw new RepositoryError('VALIDATION', 'description must be 1..200 chars');
-  }
+  assertValidEntryFields(input);
 
   const entry: TimeEntry = {
     id: crypto.randomUUID(),
     category: input.category,
-    description,
+    description: input.description.trim(),
     timeValue: input.timeValue,
     date: getLocalToday(),
     timestampCreation: Date.now(),

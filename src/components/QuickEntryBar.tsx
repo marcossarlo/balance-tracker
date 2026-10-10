@@ -14,6 +14,8 @@ const ERROR_MESSAGES: Record<RepositoryErrorCode, string> = {
   QUOTA_EXCEEDED: 'No hay espacio disponible para guardar. Libera espacio e inténtalo de nuevo.',
   DB_UNAVAILABLE: 'No se puede acceder al almacenamiento. Inténtalo de nuevo.',
   VALIDATION: 'Revisa los datos: la descripción debe tener entre 1 y 200 caracteres.',
+  BACKUP_INVALID: 'No se pudo guardar: archivo de respaldo inválido.',
+  BACKUP_TOO_LARGE: 'No se pudo guardar: el archivo de respaldo es demasiado grande.',
   UNKNOWN: 'No se pudo guardar. Inténtalo de nuevo.',
 };
 

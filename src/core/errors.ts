@@ -2,6 +2,8 @@ export type RepositoryErrorCode =
   | 'QUOTA_EXCEEDED'
   | 'DB_UNAVAILABLE'
   | 'VALIDATION'
+  | 'BACKUP_INVALID'
+  | 'BACKUP_TOO_LARGE'
   | 'UNKNOWN';
 
 export class RepositoryError extends Error {
