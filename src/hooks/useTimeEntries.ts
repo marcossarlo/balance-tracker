@@ -4,7 +4,9 @@ import {
   createTimeEntry,
   deleteTimeEntry,
   listEntriesByDate,
+  replaceTimeEntry,
   type CreateTimeEntryInput,
+  type EditTimeEntryInput,
 } from '../core/time-entry.repo';
 import type { TimeEntry } from '../core/types';
 
@@ -21,6 +23,7 @@ export interface UseTimeEntries {
   refresh: () => void;
   save: (input: CreateTimeEntryInput) => Promise<SaveResult>;
   remove: (id: string) => Promise<RemoveResult>;
+  replace: (input: EditTimeEntryInput) => Promise<SaveResult>;
 }
 
 
@@ -74,5 +77,18 @@ export function useTimeEntries(date: string): UseTimeEntries {
     [refresh],
   );
 
-  return { entries, loading, error, refresh, save, remove };
+  const replace = useCallback(
+    async (input: EditTimeEntryInput): Promise<SaveResult> => {
+      try {
+        const entry = await replaceTimeEntry(input);
+        refresh();
+        return { ok: true, entry };
+      } catch (err) {
+        return { ok: false, code: toCode(err) };
+      }
+    },
+    [refresh],
+  );
+
+  return { entries, loading, error, refresh, save, remove, replace };
 }

@@ -13,7 +13,8 @@ import { useWeeklyTrends } from './hooks/useWeeklyTrends';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState(() => getLocalToday());
-  const { entries, loading, save, remove, refresh: refreshEntries } = useTimeEntries(selectedDate);
+  const { entries, loading, save, remove, replace, refresh: refreshEntries } =
+    useTimeEntries(selectedDate);
   const { balance, loading: balanceLoading, refresh: refreshBalance } =
     useDailyBalance(selectedDate);
   const { points, loading: trendsLoading, refresh: refreshTrends } = useWeeklyTrends();
@@ -40,6 +41,14 @@ export default function App() {
     return result;
   }
 
+  async function handleReplace(input: Parameters<typeof replace>[0]) {
+    const result = await replace(input);
+    if (result.ok) {
+      await refreshAll();
+    }
+    return result;
+  }
+
   function handleImported() {
     refreshEntries();
     refreshBalance();
@@ -55,7 +64,12 @@ export default function App() {
       <div className="mt-4">
         {selectedDate === getLocalToday() && <QuickEntryBar onSave={handleSave} />}
       </div>
-      <EntryList entries={entries} loading={loading} onRemove={handleRemove} />
+      <EntryList
+        entries={entries}
+        loading={loading}
+        onRemove={handleRemove}
+        onReplace={handleReplace}
+      />
       <WeeklyTrends points={points} loading={trendsLoading} />
       <DataTransferButtons
         onExport={exportData}

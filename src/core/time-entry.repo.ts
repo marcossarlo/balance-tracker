@@ -17,6 +17,13 @@ export interface CreateTimeEntryInput {
   timeValue: DurationValue;
 }
 
+export interface EditTimeEntryInput {
+  id: string;
+  category: Category;
+  description: string;
+  timeValue: DurationValue;
+}
+
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 export function getLocalToday(): string {
@@ -80,6 +87,35 @@ export async function listEntriesByRange(
 export async function deleteTimeEntry(id: string): Promise<void> {
   try {
     await db.timeEntries.delete(id);
+  } catch (error) {
+    throw mapIndexedDbError(error);
+  }
+}
+
+export async function replaceTimeEntry(input: EditTimeEntryInput): Promise<TimeEntry> {
+  assertValidEntryFields(input);
+
+  try {
+    const original = await db.timeEntries.get(input.id);
+    if (original === undefined) {
+      throw new RepositoryError('VALIDATION', 'entry not found');
+    }
+
+    const replacement: TimeEntry = {
+      id: crypto.randomUUID(),
+      category: input.category,
+      description: input.description.trim(),
+      timeValue: input.timeValue,
+      date: original.date,
+      timestampCreation: Date.now(),
+    };
+
+    await db.transaction('rw', db.timeEntries, async () => {
+      await db.timeEntries.delete(input.id);
+      await db.timeEntries.add(replacement);
+    });
+
+    return replacement;
   } catch (error) {
     throw mapIndexedDbError(error);
   }
