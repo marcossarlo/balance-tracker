@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { Download, Upload } from 'lucide-react';
 import type { RepositoryErrorCode } from '../core/errors';
 import type { ImportResult } from '../core/backup.repo';
+import { Button } from './ui/Button';
 
 export interface DataTransferButtonsProps {
   onExport: () => Promise<{ ok: boolean } | { ok: false; code: RepositoryErrorCode }>;
@@ -53,44 +55,43 @@ export default function DataTransferButtons({
   }
 
   return (
-    <section aria-label="Respaldo de datos" className="mt-4 rounded-lg bg-white p-4 shadow">
-      <h2 className="mb-2 text-sm font-semibold text-gray-700">Respaldo</h2>
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => void handleExport()}
-          disabled={busy}
-          className="rounded bg-gray-900 px-3 py-1 text-sm font-semibold text-white disabled:opacity-50"
-        >
-          {exporting ? 'Exportando…' : 'Exportar datos'}
-        </button>
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          disabled={busy}
-          className="rounded border border-gray-300 bg-white px-3 py-1 text-sm font-semibold text-gray-700 disabled:opacity-50"
-        >
-          {importing ? 'Importando…' : 'Importar datos'}
-        </button>
-        <input
-          ref={inputRef}
-          type="file"
-          accept="application/json,.json"
-          className="hidden"
-          aria-label="Archivo de respaldo"
-          onChange={handleFileChange}
-        />
-      </div>
+    <div className="flex flex-wrap items-center gap-2">
+      <Button
+        variant="outline"
+        onClick={() => void handleExport()}
+        disabled={busy}
+        aria-label={exporting ? 'Exportando…' : 'Exportar datos'}
+      >
+        <Download size={14} aria-hidden="true" />
+        {exporting ? 'Exportando…' : 'Exportar datos'}
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() => inputRef.current?.click()}
+        disabled={busy}
+        aria-label={importing ? 'Importando…' : 'Importar datos'}
+      >
+        <Upload size={14} aria-hidden="true" />
+        {importing ? 'Importando…' : 'Importar datos'}
+      </Button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="application/json,.json"
+        className="hidden"
+        aria-label="Archivo de respaldo"
+        onChange={handleFileChange}
+      />
       {importSummary !== null && (
-        <p role="status" className="mt-2 text-sm text-green-800">
+        <p role="status" className="text-sm text-foreground">
           Importadas: {importSummary.added} · Omitidas: {importSummary.skipped}
         </p>
       )}
       {toast !== null && (
-        <p role="status" className="mt-2 text-sm text-red-700">
+        <p role="status" className="text-sm text-alert">
           {toast}
         </p>
       )}
-    </section>
+    </div>
   );
 }

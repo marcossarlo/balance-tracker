@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import DataTransferButtons from './components/DataTransferButtons';
-import DayPicker from './components/DayPicker';
-import EntryList from './components/EntryList';
+import AppHeader from './components/AppHeader';
+import BalanceMeter from './components/BalanceMeter';
+import CategoryCard from './components/CategoryCard';
 import QuickEntryBar from './components/QuickEntryBar';
-import SplitDashboard from './components/SplitDashboard';
 import WeeklyTrends from './components/WeeklyTrends';
+import ThemeToggle from './components/ThemeToggle';
+import { groupEntriesByCategory } from './core/entry-grouping';
 import { getLocalToday } from './core/time-entry.repo';
 import { useBackup } from './hooks/useBackup';
 import { useDailyBalance } from './hooks/useDailyBalance';
@@ -15,8 +16,7 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(() => getLocalToday());
   const { entries, loading, save, remove, replace, refresh: refreshEntries } =
     useTimeEntries(selectedDate);
-  const { balance, loading: balanceLoading, refresh: refreshBalance } =
-    useDailyBalance(selectedDate);
+  const { balance, refresh: refreshBalance } = useDailyBalance(selectedDate);
   const { points, loading: trendsLoading, refresh: refreshTrends } = useWeeklyTrends();
   const { exporting, importing, lastImportResult, exportData, importFile } = useBackup();
 
@@ -55,29 +55,46 @@ export default function App() {
     refreshTrends();
   }
 
+  const grouped = groupEntriesByCategory(entries);
+
   return (
-    <main className="mx-auto max-w-xl p-4">
-      <h1 className="text-2xl font-bold text-gray-900">Balance Tracker</h1>
-      <p className="mt-1 mb-2 text-sm text-gray-600">Trabajo / Aprendizaje</p>
-      <DayPicker value={selectedDate} onChange={setSelectedDate} />
-      <SplitDashboard balance={balance} loading={balanceLoading} />
-      <div className="mt-4">
-        {selectedDate === getLocalToday() && <QuickEntryBar onSave={handleSave} />}
-      </div>
-      <EntryList
-        entries={entries}
-        loading={loading}
-        onRemove={handleRemove}
-        onReplace={handleReplace}
-      />
-      <WeeklyTrends points={points} loading={trendsLoading} />
-      <DataTransferButtons
+    <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-6">
+      <AppHeader
+        selectedDate={selectedDate}
+        onDateChange={setSelectedDate}
         onExport={exportData}
         onImport={(file) => void importFile(file, handleImported)}
         exporting={exporting}
         importing={importing}
         importSummary={lastImportResult}
+        themeToggle={<ThemeToggle />}
       />
+      <BalanceMeter balance={balance} />
+      <div>
+        {selectedDate === getLocalToday() && <QuickEntryBar onSave={handleSave} />}
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <CategoryCard
+          category="WORK"
+          total={balance.work}
+          entries={grouped.work}
+          loading={loading}
+          onRemove={handleRemove}
+          onReplace={handleReplace}
+        />
+        <CategoryCard
+          category="LEARNING"
+          total={balance.learning}
+          entries={grouped.learning}
+          loading={loading}
+          onRemove={handleRemove}
+          onReplace={handleReplace}
+        />
+      </div>
+      <WeeklyTrends points={points} loading={trendsLoading} />
+      <footer className="border-t border-border pt-4 text-xs text-muted-foreground">
+        Balance Tracker · Registro local de tiempo Trabajo / Aprendizaje
+      </footer>
     </main>
   );
 }

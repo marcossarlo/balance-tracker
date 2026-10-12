@@ -48,6 +48,30 @@ describe('DataTransferButtons — exportar', () => {
   });
 });
 
+describe('DataTransferButtons — estilo del rediseño', () => {
+  it('renders icon-only accessible controls with lucide icons and outline styling', () => {
+    render(
+      <DataTransferButtons onExport={vi.fn()} onImport={vi.fn()} importSummary={null} />,
+    );
+    const exportBtn = screen.getByRole('button', { name: 'Exportar datos' });
+    const importBtn = screen.getByRole('button', { name: 'Importar datos' });
+    expect(exportBtn.querySelector('svg')).not.toBeNull();
+    expect(importBtn.querySelector('svg')).not.toBeNull();
+    expect(exportBtn.className).toContain('border');
+  });
+
+  it('keeps the import summary visible with role="status"', () => {
+    render(
+      <DataTransferButtons
+        onExport={vi.fn()}
+        onImport={vi.fn()}
+        importSummary={{ added: 1, skipped: 0 }}
+      />,
+    );
+    expect(screen.getByRole('status').textContent).toBe('Importadas: 1 · Omitidas: 0');
+  });
+});
+
 describe('DataTransferButtons — importar', () => {
   function selectFile(file: File): void {
     const input = screen.getByLabelText('Archivo de respaldo') as HTMLInputElement;

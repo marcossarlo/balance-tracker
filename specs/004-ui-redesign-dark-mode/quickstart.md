@@ -115,3 +115,22 @@ sin fetch a fuentes remotas.
 - Decisiones técnicas: [`research.md`](./research.md)
 - Modelo de datos/derivados: [`data-model.md`](./data-model.md)
 - Spec: [`spec.md`](./spec.md)
+
+## 5. Resultados de validación (2026-10-12, implementación 004)
+
+Ejecutado durante `/speckit.implement` (T051–T055):
+
+| Paso | Resultado |
+|---|---|
+| `npm test` | ✅ 31 archivos, 179 tests, 0 fallos (incluye regresión integración fake-indexeddb de las features 001–003) |
+| `npx tsc -b` | ✅ sin errores |
+| `npm run build` | ✅ bundle PWA; 9 woff2 de fuentes en `dist/assets/`; `dist/sw.js` + manifest generados (precache 20 entradas) |
+| `npm run preview` + curl | ✅ script anti-FOUC presente en el HTML construido; tokens `var(--work)`, `Instrument Serif` y utilidades `tint-*` presentes en el CSS bundle |
+| Auditoría constitución (T052) | ✅ cero hex fuera de `src/index.css`; cero `update`/`put` en core; cero estado global; deps exactas de T002 (Geist vía `@fontsource-variable/geist`) |
+| Auditoría a11y/i18n (T053) | ✅ roles `meter`/`radiogroup`/`radio`/`tablist`/`tab`/`tabpanel`/`alert`/`status`; `aria-label` en los 10 componentes con controles; foco `ring`; UI en español |
+| Limpieza (T055) | ✅ `DayPicker.tsx` y `SplitDashboard.tsx` eliminados sin imports muertos |
+
+Pendiente de verificación manual en navegador (checklist 2.1–2.7 del
+quickstart): aspecto visual de ambos modos, sticky en scroll real,
+animación del medidor, tooltips de Recharts y contraste AA — la suite
+cubre la semántica (roles, anchors, textos, anchuras) de cada caso.

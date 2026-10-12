@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buildWeekDates, computeWeeklyTrends } from '../../src/core/weekly-trends';
+import {
+  buildWeekDates,
+  computeGrowthSeries,
+  computeWeeklyTrends,
+} from '../../src/core/weekly-trends';
 import type { TimeEntry } from '../../src/core/types';
 
 const WEEK = [
@@ -62,6 +66,47 @@ describe('computeWeeklyTrends (pure)', () => {
       expect(point.work).toBe(0);
       expect(point.learning).toBe(0);
     }
+  });
+});
+
+describe('computeGrowthSeries (pure)', () => {
+  function point(work: number, learning: number, date = '2026-10-08') {
+    return { date, label: date.slice(8) + '/' + date.slice(5, 7), work, learning };
+  }
+
+  it('returns 0 growth for an empty day', () => {
+    expect(computeGrowthSeries([point(0, 0)])[0].growth).toBe(0);
+  });
+
+  it('returns 50 for an even split', () => {
+    expect(computeGrowthSeries([point(60, 60)])[0].growth).toBe(50);
+  });
+
+  it('returns 25 for a 75/25 work-heavy day', () => {
+    expect(computeGrowthSeries([point(90, 30)])[0].growth).toBe(25);
+  });
+
+  it('returns 100 for a learning-only day', () => {
+    expect(computeGrowthSeries([point(0, 45)])[0].growth).toBe(100);
+  });
+
+  it('returns 0 for a work-only day', () => {
+    expect(computeGrowthSeries([point(45, 0)])[0].growth).toBe(0);
+  });
+
+  it('handles tiny totals without NaN or Infinity', () => {
+    const result = computeGrowthSeries([point(1, 1)])[0];
+    expect(result.growth).toBe(50);
+    expect(Number.isFinite(result.growth)).toBe(true);
+  });
+
+  it('preserves length, order and date fields; does not mutate the input', () => {
+    const points = WEEK.map((date, index) => point(index * 15, (6 - index) * 15, date));
+    const snapshot = points.map((p) => ({ ...p }));
+    const result = computeGrowthSeries(points);
+    expect(result).toHaveLength(7);
+    expect(result.map((p) => p.date)).toEqual(WEEK);
+    expect(points).toEqual(snapshot);
   });
 });
 

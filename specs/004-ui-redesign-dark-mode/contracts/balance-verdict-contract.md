@@ -58,7 +58,7 @@ export function computeBalanceVerdict(balance: DailyBalance): BalanceVerdict;
 | `{90, 30, 120}` | `work-heavy`, `75/25` |
 | `{105, 15, 120}` | `work-extreme`, `88/12` |
 | `{30, 90, 120}` | `learning-heavy`, `25/75` |
-| `{15, 105, 120}` | `learning-extreme`, `12/88` |
+| `{15, 105, 120}` | `learning-extreme`, `13/87` (`Math.round(12.5) = 13`) |
 | `{1, 0, 1}` | `work-extreme`, `100/0` |
 
 ## Consumidores

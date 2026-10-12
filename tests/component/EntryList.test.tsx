@@ -20,6 +20,15 @@ const ENTRY: TimeEntry = {
   timestampCreation: 0,
 };
 
+const WORK_ENTRY_LONG: TimeEntry = {
+  id: 'entry-long',
+  category: 'WORK',
+  description: 'Descripción muy larga que debe truncarse con ellipsis para no desbordar la fila compacta de la tarjeta de categoría',
+  timeValue: 30,
+  date: '2026-10-08',
+  timestampCreation: 1,
+};
+
 function Harness({
   initialEntries,
   onRemove,
@@ -42,6 +51,17 @@ function Harness({
     />
   );
 }
+
+describe('EntryList compact rows (rediseño US4)', () => {
+  it('renders icon actions with accessible names and truncated description class', () => {
+    render(<EditHarness initialEntries={[WORK_ENTRY_LONG]} onReplace={vi.fn()} />);
+    const edit = screen.getByRole('button', { name: 'Editar' });
+    const del = screen.getByRole('button', { name: 'Eliminar' });
+    expect(edit.querySelector('svg')).not.toBeNull();
+    expect(del.querySelector('svg')).not.toBeNull();
+    expect(screen.getByText(/Descripción muy larga/).className).toContain('truncate');
+  });
+});
 
 describe('EntryList delete flow', () => {
   it('keeps the entry when confirm is cancelled', async () => {

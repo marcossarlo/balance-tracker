@@ -1,8 +1,11 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { DURATION_VALUES, type Category, type DurationValue } from '../core/types';
+import { CornerDownLeft } from 'lucide-react';
+import type { Category, DurationValue } from '../core/types';
 import type { RepositoryErrorCode } from '../core/errors';
 import type { CreateTimeEntryInput } from '../core/time-entry.repo';
-import { CATEGORY_LABELS } from './categoryLabels';
+import CategorySelector from './CategorySelector';
+import { Button } from './ui/Button';
+import { cn } from './ui/cn';
 
 export interface QuickEntryBarProps {
   onSave: (input: CreateTimeEntryInput) => Promise<
@@ -17,6 +20,20 @@ const ERROR_MESSAGES: Record<RepositoryErrorCode, string> = {
   BACKUP_INVALID: 'No se pudo guardar: archivo de respaldo inválido.',
   BACKUP_TOO_LARGE: 'No se pudo guardar: el archivo de respaldo es demasiado grande.',
   UNKNOWN: 'No se pudo guardar. Inténtalo de nuevo.',
+};
+
+const QUICK_DURATIONS: { value: DurationValue; label: string }[] = [
+  { value: 15, label: '15m' },
+  { value: 30, label: '30m' },
+  { value: 60, label: '1h' },
+  { value: 120, label: '2h' },
+  { value: 180, label: '3h' },
+  { value: 240, label: '4h' },
+];
+
+const PILL_TINT: Record<Category, string> = {
+  WORK: 'bg-work text-background',
+  LEARNING: 'bg-learning text-background',
 };
 
 export default function QuickEntryBar({ onSave }: QuickEntryBarProps) {
@@ -60,90 +77,77 @@ export default function QuickEntryBar({ onSave }: QuickEntryBarProps) {
   }
 
   return (
-    <section aria-label="Registro rápido" className="rounded-lg bg-white p-4 shadow">
-      <form onSubmit={(event) => void handleSubmit(event)} className="flex flex-col gap-3">
-        <fieldset>
-          <legend className="mb-1 text-sm font-medium text-gray-700">Categoría</legend>
-          <div className="flex gap-2">
-            {(Object.keys(CATEGORY_LABELS) as Category[]).map((value) => (
-              <button
-                key={value}
-                type="button"
-                aria-pressed={category === value}
-                onClick={() => {
-                  setCategory(value);
+    <section aria-label="Registro rápido" className="sticky top-3 z-10">
+      <div className="rounded-2xl border border-border bg-card shadow-sm">
+        <form onSubmit={(event) => void handleSubmit(event)} className="flex flex-col">
+          <div className="flex flex-wrap items-center gap-3 p-4">
+            <label className="min-w-48 flex-1">
+              <span className="sr-only">Descripción</span>
+              <input
+                type="text"
+                value={description}
+                maxLength={200}
+                onChange={(event) => {
+                  setDescription(event.target.value);
                   setValidationMessage(null);
                 }}
-                className={
-                  value === 'WORK'
-                    ? `rounded px-3 py-1 text-sm font-semibold text-white ${
-                        category === value ? 'bg-blue-800' : 'bg-blue-600'
-                      }`
-                    : `rounded px-3 py-1 text-sm font-semibold text-white ${
-                        category === value ? 'bg-amber-800' : 'bg-amber-600'
-                      }`
-                }
-              >
-                {CATEGORY_LABELS[value]}
-              </button>
-            ))}
+                placeholder="¿En qué invertiste tu tiempo?"
+                className="w-full border-none bg-transparent p-0 text-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0"
+              />
+            </label>
+            <CategorySelector
+              value={category}
+              onChange={(next) => {
+                setCategory(next);
+                setValidationMessage(null);
+              }}
+            />
           </div>
-        </fieldset>
-
-        <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
-          Descripción
-          <input
-            type="text"
-            value={description}
-            maxLength={200}
-            onChange={(event) => {
-              setDescription(event.target.value);
-              setValidationMessage(null);
-            }}
-            className="rounded border border-gray-300 px-2 py-1 text-gray-900"
-            placeholder="¿En qué dedicaste el tiempo?"
-          />
-        </label>
-
-        <fieldset>
-          <legend className="mb-1 text-sm font-medium text-gray-700">Duración (minutos)</legend>
-          <div className="flex flex-wrap gap-2">
-            {DURATION_VALUES.map((value) => (
-              <button
-                key={value}
-                type="button"
-                aria-pressed={timeValue === value}
-                onClick={() => {
-                  setTimeValue(value);
-                  setValidationMessage(null);
-                }}
-                className={`rounded border px-3 py-1 text-sm ${
-                  timeValue === value
-                    ? 'border-gray-900 bg-gray-900 text-white'
-                    : 'border-gray-300 bg-white text-gray-700'
-                }`}
-              >
-                {value} min
-              </button>
-            ))}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-3">
+            <div
+              role="group"
+              aria-label="Duración rápida"
+              className="flex flex-wrap items-center gap-1"
+            >
+              {QUICK_DURATIONS.map(({ value, label }) => {
+                const selected = timeValue === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => {
+                      setTimeValue(value);
+                      setValidationMessage(null);
+                    }}
+                    className={cn(
+                      'rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
+                      category !== null
+                        ? cn(PILL_TINT[category], selected ? '' : 'opacity-55')
+                        : selected
+                          ? 'bg-foreground text-background'
+                          : 'text-muted-foreground hover:bg-muted',
+                    )}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+            <Button type="submit">
+              Registrar
+              <CornerDownLeft size={14} aria-hidden="true" />
+            </Button>
           </div>
-        </fieldset>
-
-        <button
-          type="submit"
-          className="rounded bg-gray-900 px-4 py-2 text-sm font-semibold text-white"
-        >
-          Guardar
-        </button>
-      </form>
-
+        </form>
+      </div>
       {validationMessage !== null && (
-        <p role="alert" className="mt-2 text-sm text-red-700">
+        <p role="alert" className="mt-2 text-sm text-alert">
           {validationMessage}
         </p>
       )}
       {toast !== null && (
-        <p role="status" className="mt-2 text-sm text-red-700">
+        <p role="status" className="mt-2 text-sm text-alert">
           {toast}
         </p>
       )}

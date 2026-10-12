@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Pencil, Trash2 } from 'lucide-react';
 import type { RepositoryErrorCode } from '../core/errors';
 import type { EditTimeEntryInput } from '../core/time-entry.repo';
 import type { TimeEntry } from '../core/types';
 import EditEntryForm from './EditEntryForm';
-import { CATEGORY_LABELS } from './categoryLabels';
 
 export interface EntryListProps {
   entries: TimeEntry[];
@@ -56,22 +56,18 @@ export default function EntryList({ entries, loading, onRemove, onReplace }: Ent
   }
 
   if (loading) {
-    return <p className="text-sm text-gray-500">Cargando…</p>;
+    return <p className="py-3 text-sm text-muted-foreground">Cargando…</p>;
   }
   if (entries.length === 0) {
-    return <p className="text-sm text-gray-500">Sin registros este día</p>;
+    return null;
   }
 
   return (
-    <section aria-label="Entradas del día" className="mt-4">
-      <h2 className="text-lg font-semibold text-gray-900">Entradas del día</h2>
-      <ul className="mt-2 flex flex-col gap-2">
+    <>
+      <ul className="flex flex-col divide-y divide-border">
         {entries.map((entry) =>
           editingId === entry.id ? (
-            <li
-              key={entry.id}
-              className="rounded bg-white px-3 py-2 shadow"
-            >
+            <li key={entry.id} className="px-4 py-3">
               <EditEntryForm
                 entry={entry}
                 onReplace={handleReplace}
@@ -79,46 +75,40 @@ export default function EntryList({ entries, loading, onRemove, onReplace }: Ent
               />
             </li>
           ) : (
-            <li
-              key={entry.id}
-              className="flex items-center justify-between rounded bg-white px-3 py-2 shadow"
-            >
-              <span
-                className={
-                  entry.category === 'WORK'
-                    ? 'text-sm font-semibold text-blue-800'
-                    : 'text-sm font-semibold text-amber-800'
-                }
-              >
-                {CATEGORY_LABELS[entry.category]}
+            <li key={entry.id} className="flex items-center gap-3 px-4 py-2.5">
+              <span className="min-w-0 flex-1 truncate text-sm text-foreground">
+                {entry.description}
               </span>
-              <span className="flex-1 px-3 text-sm text-gray-700">{entry.description}</span>
-              <span className="text-sm text-gray-500">{entry.timeValue} min</span>
+              <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                {entry.timeValue} min
+              </span>
               {onReplace && (
                 <button
                   type="button"
+                  aria-label="Editar"
                   onClick={() => setEditingId(entry.id)}
-                  className="ml-2 rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-700"
+                  className="inline-flex size-7 items-center justify-center rounded-sm text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
                 >
-                  Editar
+                  <Pencil size={13} aria-hidden="true" />
                 </button>
               )}
               <button
                 type="button"
+                aria-label="Eliminar"
                 onClick={() => void handleRemove(entry.id)}
-                className="ml-2 rounded border border-red-300 px-2 py-1 text-xs font-medium text-red-700"
+                className="inline-flex size-7 items-center justify-center rounded-sm text-alert hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
               >
-                Eliminar
+                <Trash2 size={13} aria-hidden="true" />
               </button>
             </li>
           ),
         )}
       </ul>
       {toast !== null && (
-        <p role="status" className="mt-2 text-sm text-red-700">
+        <p role="status" className="px-4 py-2 text-sm text-alert">
           {toast}
         </p>
       )}
-    </section>
+    </>
   );
 }
