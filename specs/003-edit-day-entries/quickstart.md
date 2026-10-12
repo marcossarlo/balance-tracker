@@ -104,3 +104,25 @@ npm run dev          # UI para escenarios manuales
 - Búsqueda en `src/core` de `.update(` / `.put(` ⇒ 0 ocurrencias nuevas;
   el reemplazo usa únicamente `delete` + `add`.
 - V1–V8 ejecutados; resultados registrados al final del archivo.
+
+## Results — 2026-10-12
+
+Suite completa: **20 archivos, 107/107 pruebas verdes** (+19 sobre el
+baseline de 88). `tsc -b` exit 0.
+
+| Escenario | Estado | Evidencia |
+|---|---|---|
+| V1 Reemplazo exitoso | ✓ PASS | `tests/integration/time-entry-replace.test.ts` (1): UUID nuevo, fecha preservada, trim, timestamp nuevo, fila original eliminada, 1 fila, balance WORK→LEARNING |
+| V2 Preserva fecha pasada | ✓ PASS | `tests/integration/time-entry-replace.test.ts` (1, US2): `date: '2020-01-15'` conservada, 0 filas en hoy, balance del pasado actualizado, balance de hoy intacto |
+| V3 Validación + id inexistente | ✓ PASS | `tests/integration/time-entry-replace.test.ts` (4): category/timeValue/descripción inválidos e id `'no-existe'` ⇒ `VALIDATION` + BD intacta |
+| V4 Rollback atómico | ✓ PASS | `tests/integration/time-entry-replace.test.ts` (1): spy `add` lanzando una vez ⇒ `UNKNOWN`, fila original intacta, reintento tras restore funciona |
+| V5 Formulario de edición | ✓ PASS | `tests/component/EditEntryForm.test.tsx` (6): prellenado, guardar con valores visibles, validación descripción vacía, cancelar, toast ES + formulario abierto en fallo, Guardar deshabilitado en vuelo |
+| V6 Lista con edición inline | ✓ PASS | `tests/component/EntryList.test.tsx` (6 edit): loading sin Editar, prellenado por fila, un solo formulario, guardado cierra + datos nuevos, cancelar restaura, pasado behaves igual (US2) |
+| V7 End-to-end manual (dev) | ⏳ PENDIENTE (usuario) | `npm run dev`: editar de hoy, editar de día pasado, cancelar, validación, doble guardado |
+| V8 Offline | ⏳ PENDIENTE (usuario) | DevTools → Offline con app cargada |
+
+Auditorías constitución: 0 `update(`/`put(` en
+`src/core/time-entry.repo.ts` (solo `get`/`delete`/`add` en transacción);
+0 dependencias nuevas; 0 estado global; UI ES ("Editar", "Guardar",
+"Cancelar", "No se pudo editar…"); código/firmas EN
+(`replaceTimeEntry`, `EditTimeEntryInput`, `EditEntryForm`).
