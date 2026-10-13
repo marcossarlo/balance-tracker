@@ -68,11 +68,13 @@ export default function App() {
         importing={importing}
         importSummary={lastImportResult}
         themeToggle={<ThemeToggle />}
-      />
-      <BalanceMeter balance={balance} />
+      />     
+      {/* QuickEntryBar should be rendered only if the selected date is today */} 
       <div>
         {selectedDate === getLocalToday() && <QuickEntryBar onSave={handleSave} />}
       </div>
+      {/* BalanceMeter should be rendered only if balance is available */}
+      <BalanceMeter balance={balance} />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <CategoryCard
           category="WORK"
