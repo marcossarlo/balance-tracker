@@ -60,19 +60,20 @@ export default function DataTransferButtons({
         variant="outline"
         onClick={() => void handleExport()}
         disabled={busy}
+        title="Exportar JSON" 
         aria-label={exporting ? 'Exportando…' : 'Exportar datos'}
       >
         <Download size={14} aria-hidden="true" />
-        {exporting ? 'Exportando…' : 'Exportar datos'}
+        {/* {exporting ? 'Exportando…' : 'Exportar datos'} */}
       </Button>
       <Button
         variant="outline"
         onClick={() => inputRef.current?.click()}
         disabled={busy}
+        title="Importar JSON"
         aria-label={importing ? 'Importando…' : 'Importar datos'}
       >
         <Upload size={14} aria-hidden="true" />
-        {importing ? 'Importando…' : 'Importar datos'}
       </Button>
       <input
         ref={inputRef}

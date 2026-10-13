@@ -8,11 +8,13 @@ export default function ThemeToggle() {
 
   return (
     <Button
-      variant="icon"
+      variant="outline"
+      size="icon"
       onClick={toggle}
       aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+      title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
     >
-      {isDark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
+      {isDark ? <Sun size={18} strokeWidth={2.25} aria-hidden="true" /> : <Moon size={18} strokeWidth={2.25} aria-hidden="true" />}
     </Button>
   );
 }
