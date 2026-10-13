@@ -4,6 +4,8 @@ import type { RepositoryErrorCode } from '../core/errors';
 import type { EditTimeEntryInput } from '../core/time-entry.repo';
 import type { TimeEntry } from '../core/types';
 import { CATEGORY_LABELS } from './categoryLabels';
+import { Button } from './ui/Button';
+import { cn } from './ui/cn';
 
 export interface EditEntryFormProps {
   entry: TimeEntry;
@@ -67,7 +69,7 @@ export default function EditEntryForm({ entry, onReplace, onCancel }: EditEntryF
       className="flex flex-1 flex-col gap-3"
     >
       <fieldset>
-        <legend className="mb-1 text-sm font-medium text-gray-700">Categoría</legend>
+        <legend className="mb-1 text-sm font-medium text-foreground">Categoría</legend>
         <div className="flex gap-2">
           {(Object.keys(CATEGORY_LABELS) as Category[]).map((value) => (
             <button
@@ -78,15 +80,14 @@ export default function EditEntryForm({ entry, onReplace, onCancel }: EditEntryF
                 setCategory(value);
                 setValidationMessage(null);
               }}
-              className={
-                value === 'WORK'
-                  ? `rounded px-3 py-1 text-sm font-semibold text-white ${
-                      category === value ? 'bg-blue-800' : 'bg-blue-600'
-                    }`
-                  : `rounded px-3 py-1 text-sm font-semibold text-white ${
-                      category === value ? 'bg-amber-800' : 'bg-amber-600'
-                    }`
-              }
+              className={cn(
+                'rounded-lg px-3 py-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
+                category === value
+                  ? value === 'WORK'
+                    ? 'bg-work text-background'
+                    : 'bg-learning text-background'
+                  : 'border border-border text-muted-foreground hover:bg-muted',
+              )}
             >
               {CATEGORY_LABELS[value]}
             </button>
@@ -94,7 +95,7 @@ export default function EditEntryForm({ entry, onReplace, onCancel }: EditEntryF
         </div>
       </fieldset>
 
-      <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
+      <label className="flex flex-col gap-1 text-sm font-medium text-foreground">
         Descripción
         <input
           type="text"
@@ -104,12 +105,12 @@ export default function EditEntryForm({ entry, onReplace, onCancel }: EditEntryF
             setDescription(event.target.value);
             setValidationMessage(null);
           }}
-          className="rounded border border-gray-300 px-2 py-1 text-gray-900"
+          className="rounded-lg border border-border bg-card px-2 py-1 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
         />
       </label>
 
       <fieldset>
-        <legend className="mb-1 text-sm font-medium text-gray-700">Duración (minutos)</legend>
+        <legend className="mb-1 text-sm font-medium text-foreground">Duración (minutos)</legend>
         <div className="flex flex-wrap gap-2">
           {DURATION_VALUES.map((value) => (
             <button
@@ -120,11 +121,12 @@ export default function EditEntryForm({ entry, onReplace, onCancel }: EditEntryF
                 setTimeValue(value);
                 setValidationMessage(null);
               }}
-              className={`rounded border px-3 py-1 text-sm ${
+              className={cn(
+                'rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
                 timeValue === value
-                  ? 'border-gray-900 bg-gray-900 text-white'
-                  : 'border-gray-300 bg-white text-gray-700'
-              }`}
+                  ? 'bg-foreground text-background'
+                  : 'text-muted-foreground hover:bg-muted',
+              )}
             >
               {value} min
             </button>
@@ -133,29 +135,21 @@ export default function EditEntryForm({ entry, onReplace, onCancel }: EditEntryF
       </fieldset>
 
       <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={saving}
-          className="rounded bg-gray-900 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
-        >
+        <Button type="submit" disabled={saving}>
           Guardar
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700"
-        >
+        </Button>
+        <Button variant="outline" onClick={onCancel}>
           Cancelar
-        </button>
+        </Button>
       </div>
 
       {validationMessage !== null && (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-sm text-alert">
           {validationMessage}
         </p>
       )}
       {toast !== null && (
-        <p role="status" className="text-sm text-red-700">
+        <p role="status" className="text-sm text-alert">
           {toast}
         </p>
       )}

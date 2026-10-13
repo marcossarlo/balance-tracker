@@ -1,3 +1,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f3f4f6;
+    --card: #ffffff;
+    --foreground: #12151b;
+    --work: #3d5a8c;
+    --learning: #9a7429;
+    --alert: #c2410c;
+    --popover: var(--card);
+
+    --muted: color-mix(in srgb, var(--foreground) 6%, var(--background));
+    --muted-foreground: color-mix(in srgb, var(--foreground) 55%, var(--background));
+    --border: color-mix(in srgb, var(--foreground) 12%, var(--background));
+    --input: color-mix(in srgb, var(--foreground) 10%, var(--background));
+
+    --radius: 0.75rem;
+    --radius-06: calc(var(--radius) * 0.6);
+    --radius-12: calc(var(--radius) * 1.2);
+    --radius-16: calc(var(--radius) * 1.6);
+    --radius-20: calc(var(--radius) * 2);
+    --radius-26: calc(var(--radius) * 2.6);
+
+    --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  }
+
+  .dark {
+    --background: #0f1218;
+    --card: #161a22;
+    --foreground: #ece8e1;
+    --work: #8fa5cc;
+    --learning: #d8b46c;
+    --alert: #f0835a;
+    --popover: var(--card);
+
+    --muted: color-mix(in srgb, var(--foreground) 6%, var(--background));
+    --muted-foreground: color-mix(in srgb, var(--foreground) 55%, var(--background));
+    --border: color-mix(in srgb, var(--foreground) 12%, var(--background));
+    --input: color-mix(in srgb, var(--foreground) 10%, var(--background));
+  }
+
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .tint-work {
+    background-color: color-mix(in srgb, var(--work) 10%, transparent);
+  }
+
+  .tint-learning {
+    background-color: color-mix(in srgb, var(--learning) 10%, transparent);
+  }
+}

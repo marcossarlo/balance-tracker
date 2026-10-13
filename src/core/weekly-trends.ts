@@ -52,3 +52,17 @@ export function computeWeeklyTrends(
     learning: totals.get(date)!.learning,
   }));
 }
+
+export interface GrowthPoint {
+  date: string;
+  label: string;
+  growth: number;
+}
+
+export function computeGrowthSeries(points: WeeklyTrendPoint[]): GrowthPoint[] {
+  return points.map((point) => {
+    const total = point.work + point.learning;
+    const growth = total > 0 ? Math.round((point.learning / total) * 100) : 0;
+    return { date: point.date, label: point.label, growth };
+  });
+}
